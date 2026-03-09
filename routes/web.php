@@ -132,6 +132,43 @@ Route::delete('parking/{id}', [ParkingController::class, 'destroy'])->name('park
 
 Route::resource('pets', PetController::class);
 
+// Route::resource('pets', PetController::class);
+// Route::get('pets/archived', [PetController::class, 'archived'])->name('pets.archived');
+// Route::post('pets/bulk-delete', [PetController::class, 'bulkDelete'])->name('pets.bulk-delete');
+// Route::post('pets/bulk-restore', [PetController::class, 'bulkRestore'])->name('pets.bulk-restore');
+// Route::put('pets/{id}/restore', [PetController::class, 'restore'])->name('pets.restore');
+// Route::delete('pets/{id}/force-delete', [PetController::class, 'forceDelete'])->name('pets.force-delete');
+// Route::patch('pets/{id}/vaccination', [PetController::class, 'updateVaccination'])->name('pets.vaccination');
+
+
+
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    // Pet Management Routes
+    Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
+    Route::get('/pets/archived', [PetController::class, 'archived'])->name('pets.archived');
+    Route::get('/pets/create', [PetController::class, 'create'])->name('pets.create');
+    Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
+    Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
+    Route::get('/pets/{pet}/edit', [PetController::class, 'edit'])->name('pets.edit');
+    Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
+    Route::delete('/pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
+    Route::put('/pets/{pet}/restore', [PetController::class, 'restore'])->name('pets.restore');
+    Route::delete('/pets/{pet}/force-delete', [PetController::class, 'forceDelete'])->name('pets.force-delete');
+       // Add this route for archived show
+    Route::get('/pets/archived/{id}', [PetController::class, 'archivedShow'])->name('pets.archived-show');
+    Route::get('/pets/all-residents', [PetController::class, 'allResidents'])->name('pets.all-residents');
+  Route::get('/resident/profile/{id}', [App\Http\Controllers\ResidentController::class, 'profile'])->name('residents.profile');
+
+    // Add this route for status updates
+    Route::patch('/pets/{pet}/status', [PetController::class, 'toggleStatus'])->name('pets.status');
+
+    // Bulk operations
+    Route::post('/pets/bulk-delete', [PetController::class, 'bulkDelete'])->name('pets.bulk-delete');
+    Route::post('/pets/bulk-restore', [PetController::class, 'bulkRestore'])->name('pets.bulk-restore');
+    // Toggle dangerous status - Admin only
+    Route::patch('/pets/{id}/toggle-dangerous', [PetController::class, 'toggleDangerous'])->name('pets.toggle-dangerous');
+});
+
 
 // ===========================================
 // HELP ATTENDANCE ROUTE

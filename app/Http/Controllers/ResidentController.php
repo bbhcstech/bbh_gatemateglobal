@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Models\Resident;
 use App\Models\Tower;
 use App\Models\Floor;
+use App\Models\Pet; 
 use App\Models\Flat;
 use App\Models\ParkingLot;
 use Illuminate\Http\Request;
@@ -70,7 +71,29 @@ public function store(Request $request)
     return redirect()->route('residents.index')
         ->with('success', 'Resident & Login account created successfully');
 }
+public function profile($id)
+{
+    // Find the resident (User with role 'resident')
+    $resident = User::with('flat')->findOrFail($id);
 
+    // Get their pets
+    $pets = Pet::where('resident_id', $id)
+               ->whereNull('deleted_at')
+               ->get();
+
+    // Return the admin view
+    return view('admin.resident.profile', compact('resident', 'pets'));
+}
+
+public function show($id)
+{
+    $resident = Resident::with('familyMembers.relation')->find($id);
+    $pets = Pet::where('resident_id', $resident->user_id ?? $id)
+               ->whereNull('deleted_at')
+               ->get();
+
+    return view('admin.resident.profile', compact('resident', 'pets'));
+}
 
     // public function show(Resident $resident)
     // {
@@ -78,12 +101,12 @@ public function store(Request $request)
     // }
 
 
-        public function show($id)
-        {
-            $resident = Resident::with('familyMembers.relation')->find($id);
+        // public function show($id)
+        // {
+        //     $resident = Resident::with('familyMembers.relation')->find($id);
 
-            return view('resident.profile', compact('resident'));
-        }
+        //     return view('resident.profile', compact('resident'));
+        // }
 
     public function edit(Resident $resident)
     {

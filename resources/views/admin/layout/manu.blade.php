@@ -6,7 +6,7 @@
 
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
-           
+
             <a href="{{ route('home') }}" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
@@ -39,7 +39,7 @@
           <div class="menu-inner-shadow"></div>
 
           <ul class="menu-inner py-1">
-              
+
               <!-- Dashboards -->
 
 
@@ -50,8 +50,8 @@
                 <div class="text-truncate" data-i18n="Dashboard">&nbsp;Dashboard</div>
             </a>
         </li>
-        
-        
+
+
              {{-- Users (Admin only) --}}
         @if(auth()->check() && auth()->user()->role_name === 'admin')
             <li class="menu-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
@@ -61,7 +61,7 @@
                 </a>
             </li>
         @endif
-        
+
         <!--@if(auth()->check() && auth()->user()->role === 'admin')-->
         <!--    <li class="menu-item {{ request()->routeIs('parking.index') ? 'active' : '' }}">-->
         <!--        <a href="{{ route('parking.index') }}" class="menu-link">-->
@@ -92,7 +92,7 @@
                     <i class="fas fa-users"></i>
                     <div class="text-truncate">&nbsp;Residents</div>
                 </a>
-            
+
                 <ul class="menu-sub">
                     @if(auth()->check() && auth()->user()->role_name === 'admin')
                     <li class="menu-item">
@@ -108,38 +108,38 @@
                             <div class="text-truncate">&nbsp;Family Members</div>
                         </a>
                     </li>
-                    
+
                     <li class="menu-item">
                     <a href="{{ route('pets.index') }}" class="menu-link">
                         <i class="fas fa-paw"></i>
                         <div>Pets</div>
                     </a>
                 </li>
-                
+
                 <li class="menu-item">
                     <a href="{{ route('complaints.index') }}" class="menu-link">
                         <i class="fas fa-exclamation-triangle"></i>
                         <div class="text-truncate" data-i18n="Dashboard">&nbsp;Raise Complaint</div>
                     </a>
                 </li>
-                
-                 
+
+
                 <li class="menu-item ">
                     <a href="{{ route('vehicles.index') }}" class="menu-link">
                         <i class="fas fa-taxi"></i>
 
                         <div class="text-truncate" data-i18n="Domestic Help">&nbsp; Vehicles</div>
                     </a>
-                  </li>             
-  
+                  </li>
+
                 </ul>
             </li>
 
                @endif
-               
-        
+
+
        @if(auth()->check() && in_array(strtolower(optional(auth()->user()->roleMaster)->role_name), ['admin', 'resident','security']))
-               <li class="menu-item 
+               <li class="menu-item
                 {{ request()->routeIs(
                     'visitors.*',
                     'visitor-preapproval.*',
@@ -180,25 +180,25 @@
                 <div class="text-truncate">Guest Entry / Exit</div>
             </a>
         </li>
-        
-        
+
+
 
     </ul>
     @endif
 </li>
 
  @if(auth()->check() && in_array(strtolower(optional(auth()->user()->roleMaster)->role_name), ['admin', 'resident','security']))
-             
-      
-        
-        
+
+
+
+
         <li class="menu-item {{ request()->routeIs('domestic-helps.*','help.attendance.*','help.payments.*','help-ratings.*') ? 'active open' : '' }}">
     <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="fas fa-broom"></i>
         <div class="text-truncate" data-i18n="Domestic Help">&nbsp; Visiting Help</div>
     </a>
 
-             
+
     <ul class="menu-sub">
 
         <li class="menu-item {{ request()->routeIs('domestic-helps.*') ? 'active' : '' }}">
@@ -235,7 +235,7 @@
                 <i class="fas fa-taxi"></i>
                 <div class="text-truncate" data-i18n="Domestic Help">&nbsp; Cab Management</div>
             </a>
-            
+
              <ul class="menu-sub">
            @if(auth()->check() && in_array(auth()->user()->role, ['resident']))
                 <li class="menu-item {{ request()->routeIs('cab.*') ? 'active' : '' }}">
@@ -248,36 +248,36 @@
                        My Pre-Approve Cab
                     </a>
                 </li>
-           @endif     
-         
+           @endif
+
             @if(auth()->check() && in_array(strtolower(optional(auth()->user()->roleMaster)->role_name), ['admin','security']))
                 <li class="menu-item {{ request()->routeIs('cab.*') ? 'active' : '' }}">
                     <a href="{{ route('cab.index') }}" class="menu-link">
                        Pre-Approve Cab
                     </a>
                 </li>
-                @endif 
-                
-                
-                
+                @endif
+
+
+
                  @if(auth()->check() && in_array(strtolower(optional(auth()->user()->roleMaster)->role_name), ['security']))
                 <li class="menu-item {{ request()->routeIs('cab.*') ? 'active' : '' }}">
                     <a href="{{ route('cab.entry.list') }}" class="menu-link">
                         🚕 Cab Entry / Exit
                     </a>
                 </li>
-           
-            
-           
+
+
+
             @endif
-            
-            
-            
+
+
+
 
              </ul>
 
-             
-   
+
+
 </li>
 
 <li class="menu-item {{ request()->routeIs('delivery.*') ? 'active open' : '' }}">
@@ -288,7 +288,7 @@
 
     <ul class="menu-sub">
 
-       
+
           @if(auth()->check() && auth()->user()->role_name === 'resident')
             <li class="menu-item {{ request()->routeIs('delivery.create') ? 'active' : '' }}">
                 <a href="{{ route('delivery.create') }}" class="menu-link">
@@ -304,7 +304,7 @@
         @endif
 
         {{-- ADMIN & SECURITY --}}
-      
+
         @if(auth()->check() && in_array(strtolower(optional(auth()->user()->roleMaster)->role_name), ['admin','security']))
             <li class="menu-item {{ request()->routeIs('delivery.index') ? 'active' : '' }}">
                 <a href="{{ route('delivery.index') }}" class="menu-link">
@@ -314,7 +314,7 @@
         @endif
 
         {{-- SECURITY ONLY --}}
-      
+
        @if(auth()->check() && auth()->user()->role_name === 'security')
             <li class="menu-item {{ request()->routeIs('delivery.entry.*') ? 'active' : '' }}">
                 <a href="{{ route('delivery.entry.index') }}" class="menu-link">
@@ -329,14 +329,14 @@
 
 
   @endif
-              
+
                 @if(auth()->check() && in_array(strtolower(optional(auth()->user()->roleMaster)->role_name), ['admin', 'resident','security']))
             <!--<li class="menu-item {{ request()->routeIs('vendor-visits.*') ? 'open' : '' }}">-->
             <!--    <a href="javascript:void(0);" class="menu-link menu-toggle">-->
             <!--        <i class="fas fa-truck"></i>-->
             <!--        <div class="text-truncate">&nbsp;Vendor Visits</div>-->
             <!--    </a>-->
-            
+
             <!--    <ul class="menu-sub">-->
             <!--        <li class="menu-item {{ request()->routeIs('vendor-visits.index') ? 'active' : '' }}">-->
             <!--            <a href="{{ route('vendor-visits.index') }}" class="menu-link">-->
@@ -344,7 +344,7 @@
             <!--                <div class="text-truncate">All Visits</div>-->
             <!--            </a>-->
             <!--        </li>-->
-            
+
             <!--        <li class="menu-item {{ request()->routeIs('vendor-visits.create') ? 'active' : '' }}">-->
             <!--            <a href="{{ route('vendor-visits.create') }}" class="menu-link">-->
             <!--                <i class="fas fa-plus me-2"></i>-->
@@ -355,13 +355,13 @@
             <!--</li>-->
             @endif
 
-  
 
 
 
 
-  
-    
+
+
+
      @if(auth()->check() && auth()->user()->role_name === 'admin')
                <li class="menu-item {{ request()->routeIs('patrols.*') ? 'active' : '' }}">
 
@@ -372,7 +372,7 @@
                     </div>
                   </a>
 
-      
+
                 </li>
 
                <li class="menu-item {{ request()->routeIs('security-guards.*') ? 'active' : '' }}">
@@ -384,13 +384,13 @@
                     </div>
                   </a>
 
-      
+
                 </li>
-                
+
               </ul>
             </li>
 
-           
+
              <li class="menu-item">
                   <a href="{{ route('amenities.index') }}" class="menu-link">
                      <i class="fas fa-swimming-pool"></i>&nbsp;
@@ -849,7 +849,7 @@
                                <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Log Out</span>
                             </x-dropdown-link>
                         </form>
-                      
+
                     </li>
                   </ul>
                 </li>
@@ -857,5 +857,17 @@
               </ul>
             </div>
           </nav>
+      <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        let toggles = document.querySelectorAll(".menu-toggle");
+                        toggles.forEach(toggle => {
+                            toggle.addEventListener("click", function(e) {
+                                e.preventDefault();
+                                let parent = this.closest(".menu-item");
+                                parent.classList.toggle("open");
+                            });
+                        });
+                    });
+                </script>
 
           <!-- / Navbar -->

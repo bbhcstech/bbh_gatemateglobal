@@ -503,7 +503,7 @@
                 <!-- Archive Button -->
             <a href="{{ route('vehicles.archived') }}" class="btn btn-outline">
                     <i class="fas fa-archive me-2"></i>
-                    View Archive 
+                    View Archive
                 </a>
 
                 <!-- Add Vehicle Button -->

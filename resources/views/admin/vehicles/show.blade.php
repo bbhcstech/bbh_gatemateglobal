@@ -487,12 +487,12 @@
                     @endcan
 
                     <!-- View Owner Button -->
-                    @if($vehicle->resident_id)
-                    <a href="{{ route('residents.show', $vehicle->resident_id) }}" class="action-btn btn-view-owner text-decoration-none">
+                    <!-- @if($vehicle->resident_id)
+                    <a href="{{ route('residents.profile', $vehicle->resident_id) }}" class="action-btn btn-view-owner text-decoration-none">
                         <i class="fas fa-user"></i>
                         View Owner Details
                     </a>
-                    @endif
+                    @endif -->
 
                     <!-- Delete Button (Archive) -->
                     @can('delete', $vehicle)
