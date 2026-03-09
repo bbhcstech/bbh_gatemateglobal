@@ -62,13 +62,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
+
     public function hasRole($role)
     {
         return $this->role === $role;
     }
-    
-    
+
+
     public function isAdmin()
 {
     return $this->role === 'admin';
@@ -78,9 +78,14 @@ public function isSecurity()
 {
     return $this->role === 'security';
 }
+// public function resident()
+// {
+//     return $this->hasOne(Resident::class);
+// }
+
 public function resident()
 {
-    return $this->hasOne(Resident::class);
+    return $this->hasOne(Resident::class, 'user_id');
 }
 
 public function tower()

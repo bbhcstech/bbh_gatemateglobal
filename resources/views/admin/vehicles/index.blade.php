@@ -4,1118 +4,1087 @@
 
 @section('content')
 <style>
-    /* Purple & White Theme - Enhanced */
+    /* Clean & Professional Theme */
     :root {
-        --primary-purple: #8B5CF6;
-        --primary-purple-dark: #7C3AED;
-        --primary-purple-light: #EDE9FE;
-        --secondary-purple: #A78BFA;
-        --gradient-purple: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
-        --gradient-purple-hover: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-light: #dbeafe;
+        --secondary: #64748b;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --dark: #1e293b;
+        --light: #f8fafc;
+        --border: #e2e8f0;
     }
 
-    /* Header Styling - Enhanced */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .container-fluid {
+        background: #f1f4f9;
+        min-height: 100vh;
+        padding: 1.5rem !important;
+    }
+
+    /* Header */
     .page-header {
-        background: var(--gradient-purple);
-        padding: 30px 35px;
-        border-radius: 25px;
-        margin-bottom: 30px;
-        color: white;
-        box-shadow: 0 20px 40px rgba(124, 58, 237, 0.3);
-        animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .page-header::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        animation: rotate 20s linear infinite;
-    }
-
-    @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-40px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Stats Cards - Enhanced */
-    .stats-card {
         background: white;
-        border-radius: 20px;
-        padding: 25px 20px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.03);
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        border: 1px solid var(--primary-purple-light);
-        animation: fadeInUp 0.6s ease-out;
-        position: relative;
-        overflow: hidden;
+        border-radius: 16px;
+        padding: 1.5rem 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        border: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .stats-card::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100px;
-        height: 100px;
-        background: var(--primary-purple-light);
-        border-radius: 50%;
-        opacity: 0.3;
-        transform: translate(30px, -30px);
-        transition: all 0.4s ease;
+    .header-title h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 0.25rem;
     }
 
-    .stats-card:hover::after {
-        transform: translate(20px, -20px) scale(1.5);
-        opacity: 0.5;
+    .header-title p {
+        color: var(--secondary);
+        font-size: 0.875rem;
+        margin: 0;
     }
 
-    .stats-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
+    /* Stats Cards */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
     }
 
-    .stats-icon {
-        width: 60px;
-        height: 60px;
-        background: var(--primary-purple-light);
-        border-radius: 18px;
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 1.25rem;
+        border: 1px solid var(--border);
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        border-color: var(--primary);
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--primary-purple);
-        font-size: 1.8rem;
-        transition: all 0.4s ease;
-        position: relative;
-        z-index: 1;
+        font-size: 1.25rem;
     }
 
-    .stats-card:hover .stats-icon {
-        transform: scale(1.1) rotate(5deg);
-        background: var(--primary-purple);
+    .stat-icon.total { background: var(--primary-light); color: var(--primary); }
+    .stat-icon.approved { background: #d1fae5; color: var(--success); }
+    .stat-icon.pending { background: #fed7aa; color: var(--warning); }
+    .stat-icon.parking { background: #e2e8f0; color: var(--secondary); }
+
+    .stat-info h6 {
+        font-size: 0.75rem;
+        color: var(--secondary);
+        margin-bottom: 0.25rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .stat-info h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    /* Main Card */
+    .main-card {
+        background: white;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .card-header {
+        background: white;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-header h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .card-header h5 i {
+        color: var(--primary);
+    }
+
+    /* Toolbar */
+    .toolbar {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+        border: 1px solid transparent;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: var(--primary);
         color: white;
     }
 
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .btn-primary:hover {
+        background: var(--primary-dark);
     }
 
-    /* Main Card - Enhanced */
-    .main-card {
-        border: none;
-        border-radius: 25px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
-        overflow: hidden;
-        animation: fadeInUp 0.8s ease-out;
-        backdrop-filter: blur(10px);
-        background: rgba(255, 255, 255, 0.95);
-    }
-
-    .card-header-custom {
+    .btn-outline {
         background: white;
-        padding: 22px 30px;
-        border-bottom: 3px solid var(--primary-purple);
-        position: relative;
+        border-color: var(--border);
+        color: var(--secondary);
     }
 
-    .card-header-custom::before {
-        content: '';
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-        width: 100px;
-        height: 3px;
-        background: var(--gradient-purple);
-        animation: slide 2s infinite;
+    .btn-outline:hover {
+        background: var(--light);
+        border-color: var(--primary);
+        color: var(--primary);
     }
 
-    @keyframes slide {
-        0% { left: 0; width: 100px; }
-        50% { left: 50%; width: 200px; transform: translateX(-50%); }
-        100% { left: calc(100% - 100px); width: 100px; }
+    .btn-danger {
+        background: white;
+        border-color: var(--border);
+        color: var(--danger);
     }
 
-    .card-header-custom h5 {
-        background: var(--gradient-purple);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 700;
-        margin: 0;
-        font-size: 1.3rem;
-        letter-spacing: 0.5px;
+    .btn-danger:hover {
+        background: #fee2e2;
+        border-color: var(--danger);
     }
 
-    /* Table Styling - Enhanced */
+    .btn-success {
+        background: white;
+        border-color: var(--border);
+        color: var(--success);
+    }
+
+    .btn-success:hover {
+        background: #d1fae5;
+        border-color: var(--success);
+    }
+
+    .btn.active {
+        background: var(--primary-light);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+
+    /* Table */
+    .table-responsive {
+        padding: 1.5rem;
+    }
+
     .vehicle-table {
         width: 100%;
         border-collapse: separate;
-        border-spacing: 0 12px;
+        border-spacing: 0 0.5rem;
     }
 
     .vehicle-table thead th {
-        background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
-        color: #4B5563;
+        background: #f8fafc;
+        color: var(--secondary);
         font-weight: 600;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 0.8px;
-        padding: 18px 15px;
-        border: none;
-        position: relative;
-    }
-
-    .vehicle-table thead th:first-child {
-        border-radius: 15px 0 0 15px;
-    }
-
-    .vehicle-table thead th:last-child {
-        border-radius: 0 15px 15px 0;
+        letter-spacing: 0.5px;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
     }
 
     .vehicle-table tbody tr {
         background: white;
-        border-radius: 20px;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-        position: relative;
-        animation: fadeInRow 0.5s ease-out forwards;
-        opacity: 0;
-    }
-
-    /* Individual row animations */
-    .vehicle-table tbody tr:nth-child(1) { animation-delay: 0.05s; }
-    .vehicle-table tbody tr:nth-child(2) { animation-delay: 0.10s; }
-    .vehicle-table tbody tr:nth-child(3) { animation-delay: 0.15s; }
-    .vehicle-table tbody tr:nth-child(4) { animation-delay: 0.20s; }
-    .vehicle-table tbody tr:nth-child(5) { animation-delay: 0.25s; }
-    .vehicle-table tbody tr:nth-child(6) { animation-delay: 0.30s; }
-    .vehicle-table tbody tr:nth-child(7) { animation-delay: 0.35s; }
-    .vehicle-table tbody tr:nth-child(8) { animation-delay: 0.40s; }
-    .vehicle-table tbody tr:nth-child(9) { animation-delay: 0.45s; }
-    .vehicle-table tbody tr:nth-child(10) { animation-delay: 0.50s; }
-    .vehicle-table tbody tr:nth-child(11) { animation-delay: 0.55s; }
-    .vehicle-table tbody tr:nth-child(12) { animation-delay: 0.60s; }
-    .vehicle-table tbody tr:nth-child(13) { animation-delay: 0.65s; }
-    .vehicle-table tbody tr:nth-child(14) { animation-delay: 0.70s; }
-    .vehicle-table tbody tr:nth-child(15) { animation-delay: 0.75s; }
-    .vehicle-table tbody tr:nth-child(16) { animation-delay: 0.80s; }
-    .vehicle-table tbody tr:nth-child(17) { animation-delay: 0.85s; }
-    .vehicle-table tbody tr:nth-child(18) { animation-delay: 0.90s; }
-    .vehicle-table tbody tr:nth-child(19) { animation-delay: 0.95s; }
-    .vehicle-table tbody tr:nth-child(20) { animation-delay: 1.00s; }
-
-    @keyframes fadeInRow {
-        from {
-            opacity: 0;
-            transform: translateX(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
+        border-radius: 12px;
+        transition: all 0.2s;
     }
 
     .vehicle-table tbody tr:hover {
-        transform: translateX(8px) scale(1.01);
-        box-shadow: 0 15px 35px rgba(124, 58, 237, 0.15);
-        background: linear-gradient(135deg, white, var(--primary-purple-light));
+        background: #f8fafc;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
     .vehicle-table tbody td {
-        padding: 18px 15px;
-        vertical-align: middle;
-        border: none;
+        padding: 1rem;
+        color: var(--dark);
+        font-size: 0.875rem;
+        border-bottom: 1px solid #f1f5f9;
     }
 
-    /* Vehicle Image - Enhanced */
-    .vehicle-image-wrapper {
-        width: 55px;
-        height: 55px;
-        border-radius: 18px;
-        overflow: hidden;
+    /* Checkbox */
+    .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .checkbox-custom {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--border);
+        border-radius: 4px;
         cursor: pointer;
-        border: 3px solid transparent;
-        background: var(--gradient-purple);
-        padding: 3px;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: 0 5px 15px rgba(124, 58, 237, 0.2);
+        transition: all 0.2s;
+        position: relative;
     }
 
-    .vehicle-image-wrapper:hover {
-        transform: scale(1.15) rotate(3deg);
-        box-shadow: 0 15px 30px rgba(124, 58, 237, 0.4);
+    .checkbox-custom.checked {
+        background: var(--primary);
+        border-color: var(--primary);
     }
 
-    .vehicle-image-wrapper img {
-        width: 100%;
-        height: 100%;
+    .checkbox-custom.checked::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 12px;
+    }
+
+    /* Vehicle Image */
+    .vehicle-thumb {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
         object-fit: cover;
-        border-radius: 15px;
+        cursor: pointer;
+        border: 2px solid var(--border);
+        transition: all 0.2s;
     }
 
-    /* Status Badges - Enhanced */
+    .vehicle-thumb:hover {
+        border-color: var(--primary);
+        transform: scale(1.1);
+    }
+
+    /* Status Badge */
     .status-badge {
-        padding: 8px 18px;
-        border-radius: 40px;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
         font-weight: 600;
-        font-size: 0.85rem;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
+        gap: 0.25rem;
+        text-transform: capitalize;
     }
 
-    .status-badge::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s ease;
-    }
-
-    .status-badge:hover::before {
-        left: 100%;
-    }
-
-    .status-badge i {
-        font-size: 0.9rem;
-    }
-
-    .status-approved {
-        background: linear-gradient(135deg, #DEF7EC 0%, #BCF0DA 100%);
-        color: #0E9F6E;
-        box-shadow: 0 4px 12px rgba(14, 159, 110, 0.2);
-    }
-
-    .status-pending {
-        background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
-        color: #B45309;
-        box-shadow: 0 4px 12px rgba(180, 83, 9, 0.2);
-    }
-
-    .status-rejected {
-        background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
-        color: #DC2626;
-        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+    .status-active {
+        background: #d1fae5;
+        color: #059669;
     }
 
     .status-inactive {
-        background: linear-gradient(135deg, #E5E7EB 0%, #D1D5DB 100%);
-        color: #4B5563;
-        box-shadow: 0 4px 12px rgba(75, 85, 99, 0.2);
+        background: #fee2e2;
+        color: #dc2626;
     }
 
-    .status-blacklisted {
-        background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
-        color: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    /* Status Dropdown */
+    .status-dropdown {
+        position: relative;
+        display: inline-block;
     }
 
-    /* Action Buttons - Enhanced */
+    .status-select {
+        padding: 0.25rem 1.5rem 0.25rem 0.75rem;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.5rem center;
+    }
+
+    .status-select.active { background: #d1fae5; color: #059669; border-color: #059669; }
+    .status-select.inactive { background: #fee2e2; color: #dc2626; border-color: #dc2626; }
+
+    /* Action Buttons */
     .action-group {
         display: flex;
-        gap: 8px;
-        justify-content: center;
-        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
     .action-btn {
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        border: none;
+        transition: all 0.2s;
+        border: 1px solid var(--border);
         background: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        position: relative;
-        overflow: hidden;
-        font-size: 1.1rem;
-    }
-
-    .action-btn::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.5);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }
-
-    .action-btn:hover::before {
-        width: 100px;
-        height: 100px;
-    }
-
-    .action-btn.view {
-        color: var(--primary-purple);
-        border: 1px solid var(--primary-purple-light);
-    }
-
-    .action-btn.view:hover {
-        background: var(--primary-purple);
-        color: white;
-        transform: translateY(-5px) rotate(5deg);
-        box-shadow: 0 10px 20px rgba(124, 58, 237, 0.4);
-    }
-
-    .action-btn.edit {
-        color: #F59E0B;
-        border: 1px solid #FEF3C7;
-    }
-
-    .action-btn.edit:hover {
-        background: #F59E0B;
-        color: white;
-        transform: translateY(-5px) rotate(5deg);
-        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.4);
-    }
-
-    .action-btn.delete {
-        color: #EF4444;
-        border: 1px solid #FEE2E2;
-    }
-
-    .action-btn.delete:hover {
-        background: #EF4444;
-        color: white;
-        transform: translateY(-5px) rotate(5deg);
-        box-shadow: 0 10px 20px rgba(239, 68, 68, 0.4);
-    }
-
-    .action-btn.restore {
-        color: #10B981;
-        border: 1px solid #DEF7EC;
-    }
-
-    .action-btn.restore:hover {
-        background: #10B981;
-        color: white;
-        transform: translateY(-5px) rotate(5deg);
-        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
-    }
-
-    .action-btn.status {
-        color: var(--primary-purple);
-        border: 1px solid var(--primary-purple-light);
-    }
-
-    .action-btn.status:hover {
-        background: var(--primary-purple);
-        color: white;
-        transform: translateY(-5px) rotate(5deg);
-        box-shadow: 0 10px 20px rgba(124, 58, 237, 0.4);
-    }
-
-    /* Status Dropdown Menu - New */
-    .status-dropdown-menu {
-        border: none;
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
-        padding: 10px;
-        min-width: 180px;
-        animation: fadeInScale 0.3s ease-out;
-        border: 1px solid var(--primary-purple-light);
-    }
-
-    @keyframes fadeInScale {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-
-    .status-dropdown-item {
-        border-radius: 12px;
-        padding: 10px 15px;
-        margin: 5px 0;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 500;
-    }
-
-    .status-dropdown-item:hover {
-        background: var(--primary-purple-light);
-        transform: translateX(5px);
-    }
-
-    .status-dropdown-item.active {
-        background: var(--primary-purple-light);
-        color: var(--primary-purple);
-        font-weight: 600;
-    }
-
-    .status-dropdown-item i {
-        width: 20px;
-        text-align: center;
-    }
-
-    /* Archive Toggle - Enhanced */
-    .archive-toggle {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-radius: 40px;
-        padding: 10px 25px;
-        color: white;
-        font-weight: 600;
-        transition: all 0.4s ease;
+        color: var(--secondary);
         cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        position: relative;
-        overflow: hidden;
     }
 
-    .archive-toggle::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s ease;
+    .action-btn:hover {
+        background: var(--light);
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-1px);
     }
 
-    .archive-toggle:hover::before {
-        left: 100%;
-    }
+    .action-btn.view:hover { border-color: var(--primary); color: var(--primary); }
+    .action-btn.edit:hover { border-color: var(--warning); color: var(--warning); }
+    .action-btn.delete:hover { border-color: var(--danger); color: var(--danger); }
+    .action-btn.restore:hover { border-color: var(--success); color: var(--success); }
 
-    .archive-toggle.active {
-        background: white;
-        color: var(--primary-purple);
-        border-color: white;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    .archive-toggle:hover {
-        background: white;
-        color: var(--primary-purple);
-        transform: translateY(-3px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Add Vehicle Button - Enhanced */
-    .add-vehicle-btn {
-        background: white;
-        color: var(--primary-purple);
-        border-radius: 40px;
-        padding: 10px 30px;
-        font-weight: 600;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        transition: all 0.4s ease;
-        border: none;
-        position: relative;
-        overflow: hidden;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-    }
-
-    .add-vehicle-btn::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(124, 58, 237, 0.2);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }
-
-    .add-vehicle-btn:hover::before {
-        width: 300px;
-        height: 300px;
-    }
-
-    .add-vehicle-btn:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
-        background: var(--primary-purple);
-        color: white;
-    }
-
-    /* Empty State - Enhanced */
+    /* Empty State */
     .empty-state {
         text-align: center;
-        padding: 80px 20px;
-        background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
-        border-radius: 30px;
-        margin: 20px;
+        padding: 3rem;
     }
 
-    .empty-state-icon {
-        font-size: 5rem;
-        color: var(--primary-purple-light);
-        margin-bottom: 25px;
-        animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-20px); }
+    .empty-icon {
+        font-size: 3rem;
+        color: var(--border);
+        margin-bottom: 1rem;
     }
 
     .empty-state h6 {
-        color: #4B5563;
-        font-size: 1.3rem;
-        margin-bottom: 25px;
-        font-weight: 500;
+        color: var(--secondary);
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
     }
 
-    /* Modal - Enhanced */
+    /* Modal */
     .modal-content {
-        border-radius: 25px;
-        overflow: hidden;
+        border-radius: 16px;
         border: none;
-        box-shadow: 0 30px 60px rgba(124, 58, 237, 0.3);
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
     }
 
     .modal-header {
-        background: var(--gradient-purple);
-        color: white;
-        border: none;
-        padding: 20px 25px;
+        background: white;
+        border-bottom: 1px solid var(--border);
+        padding: 1.25rem;
     }
 
-    .modal-header .btn-close {
-        filter: brightness(0) invert(1);
-        opacity: 0.8;
-        transition: all 0.3s ease;
-    }
-
-    .modal-header .btn-close:hover {
-        opacity: 1;
-        transform: rotate(90deg);
+    .modal-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--dark);
     }
 
     .modal-body {
-        padding: 25px;
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border);
+        padding: 1rem 1.5rem;
     }
 
     /* DataTables Customization */
-    .dataTables_wrapper .dataTables_length select,
-    .dataTables_wrapper .dataTables_filter input {
-        border: 2px solid var(--primary-purple-light);
-        border-radius: 15px;
-        padding: 8px 15px;
-        transition: all 0.3s ease;
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        margin-bottom: 1rem;
     }
 
-    .dataTables_wrapper .dataTables_length select:focus,
+    .dataTables_wrapper .dataTables_length select,
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+    }
+
     .dataTables_wrapper .dataTables_filter input:focus {
-        border-color: var(--primary-purple);
-        box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+        border-color: var(--primary);
         outline: none;
+        box-shadow: 0 0 0 3px var(--primary-light);
     }
 
     .dataTables_paginate .paginate_button {
-        border-radius: 12px !important;
-        margin: 0 3px;
-        transition: all 0.3s ease;
-        border: 1px solid var(--primary-purple-light) !important;
+        border-radius: 6px !important;
+        margin: 0 2px;
+        padding: 0.375rem 0.75rem !important;
+        border: 1px solid var(--border) !important;
+        background: white !important;
+        color: var(--secondary) !important;
     }
 
     .dataTables_paginate .paginate_button.current {
-        background: var(--gradient-purple) !important;
-        border: none !important;
+        background: var(--primary) !important;
+        border-color: var(--primary) !important;
         color: white !important;
-        box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
     }
 
     .dataTables_paginate .paginate_button:hover {
-        background: var(--primary-purple-light) !important;
-        border-color: var(--primary-purple) !important;
-        transform: translateY(-2px);
+        background: var(--light) !important;
+        border-color: var(--primary) !important;
+    }
+
+    /* Notification */
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        border-left: 4px solid;
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+    }
+
+    .notification.success { border-left-color: var(--success); }
+    .notification.error { border-left-color: var(--danger); }
+    .notification.warning { border-left-color: var(--warning); }
+
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
     }
 </style>
 
-<div class="container-fluid py-4">
-    <!-- Page Header -->
-    <div class="page-header d-flex justify-content-between align-items-center">
-        <div>
-            <h2 class="fw-bold mb-2">🚘 Vehicle Management</h2>
-            <p class="mb-0 opacity-75">Manage all resident vehicles and parking assignments</p>
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="page-header">
+        <div class="header-title">
+            <h2>
+                <i class="fas fa-car me-2" style="color: var(--primary);"></i>
+                Vehicle Management
+            </h2>
+            <p>Manage all resident vehicles and parking assignments</p>
         </div>
-
-        <div class="d-flex gap-3">
-            <!-- Archive Toggle Button -->
-            <button class="archive-toggle {{ request()->routeIs('vehicles.archived') ? 'active' : '' }}"
-                    onclick="toggleArchive()">
-                <i class="fas fa-{{ request()->routeIs('vehicles.archived') ? 'eye' : 'archive' }}"></i>
-                <span>{{ request()->routeIs('vehicles.archived') ? 'Show Active' : 'Show Archived' }}</span>
-            </button>
-
-            @if(auth()->check() && in_array(strtolower(optional(auth()->user()->roleMaster)->role_name), ['admin', 'resident']))
-                <a href="{{ route('vehicles.create') }}" class="add-vehicle-btn">
-                    <i class="fas fa-plus-circle"></i>
-                    Add Vehicle
+        <!-- In the header section of your index.blade.php, update the toolbar -->
+            <div div class="toolbar">
+                <!-- Archive Button -->
+            <a href="{{ route('vehicles.archived') }}" class="btn btn-outline">
+                    <i class="fas fa-archive me-2"></i>
+                    View Archive 
                 </a>
-            @endif
-        </div>
+
+                <!-- Add Vehicle Button -->
+                @if(auth()->check() && in_array(strtolower(optional(auth()->user()->roleMaster)->role_name), ['admin', 'resident']))
+                    <a href="{{ route('vehicles.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>
+                        Add Vehicle
+                    </a>
+                @endif
+</div>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="row mb-4 g-4">
-        <div class="col-md-3">
-            <div class="stats-card d-flex align-items-center">
-                <div class="stats-icon me-3">
-                    <i class="fas fa-car"></i>
-                </div>
-                <div>
-                    <h6 class="text-muted mb-1">Total Vehicles</h6>
-                    <h3 class="fw-bold mb-0" style="color: var(--primary-purple);">{{ $totalVehicles ?? $vehicles->count() }}</h3>
-                </div>
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon total">
+                <i class="fas fa-car"></i>
+            </div>
+            <div class="stat-info">
+                <h6>Total Vehicles</h6>
+                <h3 id="totalVehicles">{{ $totalVehicles ?? $vehicles->count() }}</h3>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="stats-card d-flex align-items-center">
-                <div class="stats-icon me-3" style="background: #DEF7EC; color: #0E9F6E;">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <div>
-                    <h6 class="text-muted mb-1">Approved</h6>
-                    <h3 class="fw-bold mb-0 text-success">{{ $approvedCount ?? $vehicles->where('status', 'approved')->count() }}</h3>
-                </div>
+        <div class="stat-card">
+            <div class="stat-icon approved">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+                <h6>Active</h6>
+                <h3 id="activeCount">{{ $activeCount ?? $vehicles->where('status', 'active')->count() }}</h3>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="stats-card d-flex align-items-center">
-                <div class="stats-icon me-3" style="background: #FEF3C7; color: #B45309;">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div>
-                    <h6 class="text-muted mb-1">Pending</h6>
-                    <h3 class="fw-bold mb-0 text-warning">{{ $pendingCount ?? $vehicles->where('status', 'pending')->count() }}</h3>
-                </div>
+        <div class="stat-card">
+            <div class="stat-icon pending">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <h6>Inactive</h6>
+                <h3 id="inactiveCount">{{ $inactiveCount ?? $vehicles->where('status', 'inactive')->count() }}</h3>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="stats-card d-flex align-items-center">
-                <div class="stats-icon me-3" style="background: #E5E7EB; color: #4B5563;">
-                    <i class="fas fa-parking"></i>
-                </div>
-                <div>
-                    <h6 class="text-muted mb-1">Parking Assigned</h6>
-                    <h3 class="fw-bold mb-0" style="color: #4B5563;">{{ $parkingAssigned ?? $vehicles->whereNotNull('parking_slot_id')->count() }}</h3>
-                </div>
+        <div class="stat-card">
+            <div class="stat-icon parking">
+                <i class="fas fa-parking"></i>
+            </div>
+            <div class="stat-info">
+                <h6>Parking Assigned</h6>
+                <h3 id="parkingAssigned">{{ $parkingAssigned ?? $vehicles->whereNotNull('parking_slot_id')->count() }}</h3>
             </div>
         </div>
     </div>
 
     <!-- Main Card -->
     <div class="main-card">
-        <div class="card-header-custom d-flex justify-content-between align-items-center">
+        <div class="card-header">
             <h5>
-                <i class="fas fa-{{ request()->routeIs('vehicles.archived') ? 'archive' : 'list' }} me-2"></i>
+                <i class="fas fa-{{ request()->routeIs('vehicles.archived') ? 'archive' : 'list' }}"></i>
                 {{ request()->routeIs('vehicles.archived') ? 'Archived Vehicles' : 'Active Vehicles' }}
             </h5>
-            <div>
-                <span class="badge" style="background: var(--primary-purple-light); color: var(--primary-purple); padding: 8px 18px; border-radius: 30px; font-weight: 600;">
-                    <i class="fas fa-{{ request()->routeIs('vehicles.archived') ? 'archive' : 'check-circle' }} me-1"></i>
-                    {{ $vehicles->count() }} {{ Str::plural('Record', $vehicles->count()) }}
-                </span>
+            <div class="toolbar">
+                <!-- Export Buttons -->
+                <button class="btn btn-outline" onclick="exportTable('excel')">
+                    <i class="fas fa-file-excel" style="color: #10b981;"></i>
+                    Excel
+                </button>
+                <button class="btn btn-outline" onclick="exportTable('pdf')">
+                    <i class="fas fa-file-pdf" style="color: #ef4444;"></i>
+                    PDF
+                </button>
+                <!-- Bulk Actions -->
+                <button class="btn btn-danger" id="bulkDeleteBtn" style="display: none;" onclick="bulkAction('delete')">
+                    <i class="fas fa-trash"></i>
+                    Delete Selected (0)
+                </button>
+                <button class="btn btn-success" id="bulkRestoreBtn" style="display: none;" onclick="bulkAction('restore')">
+                    <i class="fas fa-trash-restore"></i>
+                    Restore Selected (0)
+                </button>
             </div>
         </div>
 
-        <div class="card-body p-4">
+        <div class="table-responsive">
             @if($vehicles->isEmpty())
                 <div class="empty-state">
-                    <div class="empty-state-icon">
+                    <div class="empty-icon">
                         <i class="fas fa-car"></i>
                     </div>
                     <h6>No vehicles found</h6>
                     @if(auth()->check() && in_array(strtolower(optional(auth()->user()->roleMaster)->role_name), ['admin', 'resident']))
-                        <a href="{{ route('vehicles.create') }}" class="btn" style="background: var(--primary-purple); color: white; border-radius: 40px; padding: 12px 35px; font-weight: 600; box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);">
-                            <i class="fas fa-plus-circle me-2"></i>
+                        <a href="{{ route('vehicles.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>
                             Add Your First Vehicle
                         </a>
                     @endif
                 </div>
             @else
-                <div class="table-responsive">
-                    <table id="vehiclesTable" class="vehicle-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Image</th>
-                                <th>Vehicle Number</th>
-                                <th>Owner</th>
-                                <th>Status</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($vehicles as $key => $vehicle)
-                                <tr>
-                                    <td>
-                                        <span class="fw-bold" style="color: var(--primary-purple);">{{ $key + 1 }}</span>
-                                    </td>
-
-                                    <!-- Vehicle Image -->
-                                    <td>
-                                        @if($vehicle->vehicle_image)
-                                            <div class="vehicle-image-wrapper" onclick="previewImage('{{ asset($vehicle->vehicle_image) }}')">
-                                                <img src="{{ asset($vehicle->vehicle_image) }}" alt="Vehicle">
-                                            </div>
-                                        @else
-                                            <div class="vehicle-image-wrapper" onclick="previewImage('{{ asset('default-vehicle.png') }}')" style="background: var(--primary-purple-light); display: flex; align-items: center; justify-content: center;">
-                                                <i class="fas fa-car" style="color: var(--primary-purple); font-size: 1.5rem;"></i>
-                                            </div>
+                <table id="vehiclesTable" class="vehicle-table">
+                    <thead>
+                        <tr>
+                            <th width="40">
+                                <div class="checkbox-wrapper">
+                                    <div class="checkbox-custom" id="selectAll" onclick="toggleSelectAll()"></div>
+                                </div>
+                            </th>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Vehicle Details</th>
+                            <th>Owner</th>
+                            <th>Status</th>
+                            <th width="120">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($vehicles as $key => $vehicle)
+                            <tr id="row-{{ $vehicle->id }}">
+                                <td>
+                                    <div class="checkbox-wrapper">
+                                        <div class="checkbox-custom row-checkbox"
+                                             data-id="{{ $vehicle->id }}"
+                                             onclick="toggleRow(this)"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span style="color: var(--secondary);">{{ $key + 1 }}</span>
+                                </td>
+                                <td>
+                                    @if($vehicle->vehicle_image)
+                                        <img src="{{ asset($vehicle->vehicle_image) }}"
+                                             class="vehicle-thumb"
+                                             onclick="previewImage('{{ asset($vehicle->vehicle_image) }}')"
+                                             alt="Vehicle">
+                                    @else
+                                        <div class="vehicle-thumb" style="background: var(--light); display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-car" style="color: var(--secondary);"></i>
+                                        </div>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div style="font-weight: 600;">{{ $vehicle->vehicle_number ?? '-' }}</div>
+                                    <div style="font-size: 0.75rem; color: var(--secondary);">
+                                        {{ $vehicle->vehicle_type ?? 'N/A' }}
+                                        @if($vehicle->make || $vehicle->model)
+                                            • {{ $vehicle->make ?? '' }} {{ $vehicle->model ?? '' }}
                                         @endif
-                                    </td>
-
-                                    <!-- Vehicle Number -->
-                                    <td>
-                                        <div>
-                                            <span class="fw-bold" style="font-size: 1.1rem;">{{ $vehicle->vehicle_number ?? '-' }}</span>
-                                            <br>
-                                            <small class="text-muted">{{ $vehicle->vehicle_type ?? 'N/A' }}</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="font-weight: 500;">{{ $vehicle->resident->name ?? $vehicle->owner_name ?? 'N/A' }}</div>
+                                    @if($vehicle->resident && $vehicle->resident->flat)
+                                        <div style="font-size: 0.75rem; color: var(--secondary);">
+                                            <i class="fas fa-home me-1"></i>
+                                            Flat: {{ $vehicle->resident->flat->flat_no ?? 'N/A' }}
                                         </div>
-                                    </td>
-
-                                    <!-- Owner -->
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div style="width: 40px; height: 40px; background: var(--primary-purple-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
-                                                <i class="fas fa-user" style="color: var(--primary-purple);"></i>
-                                            </div>
-                                            <div>
-                                                <span class="fw-bold">{{ $vehicle->resident->name ?? $vehicle->owner_name ?? 'N/A' }}</span>
-                                                @if($vehicle->resident && $vehicle->resident->flat)
-                                                    <br>
-                                                    <small class="text-muted"><i class="fas fa-home me-1"></i>Flat: {{ $vehicle->resident->flat->flat_no ?? 'N/A' }}</small>
-                                                @endif
-                                            </div>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(!$vehicle->trashed())
+                                        <div class="status-dropdown">
+                                            <select class="status-select {{ $vehicle->status ?? 'inactive' }}"
+                                                    data-vehicle-id="{{ $vehicle->id }}"
+                                                    data-parking-slot="{{ $vehicle->parking_slot_id ?? 'null' }}"
+                                                    onchange="updateStatus(this, {{ $vehicle->id }})">
+                                                <option value="active" {{ ($vehicle->status ?? '') == 'active' ? 'selected' : '' }}>Active</option>
+                                                <option value="inactive" {{ ($vehicle->status ?? '') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                            </select>
                                         </div>
-                                    </td>
-
-                                    <!-- Status - Dynamically from DB -->
-                                    <td>
-                                        @php
-                                            $status = $vehicle->status ?? 'pending';
-                                            $statusClass = match($status) {
-                                                'approved' => 'status-approved',
-                                                'pending' => 'status-pending',
-                                                'rejected' => 'status-rejected',
-                                                'inactive' => 'status-inactive',
-                                                'blacklisted' => 'status-blacklisted',
-                                                default => 'status-pending'
-                                            };
-                                            $statusIcon = match($status) {
-                                                'approved' => 'fa-check-circle',
-                                                'pending' => 'fa-clock',
-                                                'rejected' => 'fa-times-circle',
-                                                'inactive' => 'fa-circle',
-                                                'blacklisted' => 'fa-ban',
-                                                default => 'fa-question-circle'
-                                            };
-                                        @endphp
-                                        <span class="status-badge {{ $statusClass }}">
-                                            <i class="fas {{ $statusIcon }}"></i>
-                                            {{ ucfirst($status) }}
+                                    @else
+                                        <span class="status-badge status-inactive">
+                                            <i class="fas fa-archive"></i>
+                                            Archived
                                         </span>
-                                    </td>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="action-group">
+                                        <!-- View -->
+                                        <a href="{{ route('vehicles.show', $vehicle->id) }}" class="action-btn view" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
 
-                                    <!-- Actions -->
-                                    <td class="text-center">
-                                        <div class="action-group">
-                                            <!-- View -->
-                                            <a href="{{ route('vehicles.show', $vehicle->id) }}"
-                                               class="action-btn view"
-                                               title="View Details">
-                                                <i class="fas fa-eye"></i>
+                                        @if(!$vehicle->trashed())
+                                            <!-- Edit -->
+                                            <a href="{{ route('vehicles.edit', $vehicle->id) }}" class="action-btn edit" title="Edit">
+                                                <i class="fas fa-edit"></i>
                                             </a>
 
-                                            <!-- Edit (only for active vehicles) -->
-                                            @if(!$vehicle->trashed())
-                                                <a href="{{ route('vehicles.edit', $vehicle->id) }}"
-                                                   class="action-btn edit"
-                                                   title="Edit Vehicle">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                            @endif
+                                            <!-- Delete (Archive) -->
+                                            <form action="{{ route('vehicles.destroy', $vehicle->id) }}"
+                                                  method="POST"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Archive this vehicle? It can be restored later.')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="action-btn delete" title="Archive">
+                                                    <i class="fas fa-archive"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <!-- Restore -->
+                                            <form action="{{ route('vehicles.restore', $vehicle->id) }}"
+                                                  method="POST"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Restore this vehicle?')">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="action-btn restore" title="Restore">
+                                                    <i class="fas fa-trash-restore"></i>
+                                                </button>
+                                            </form>
 
-                                            <!-- Status Change Dropdown (Admin Only) -->
-                                            @if(auth()->user()->role === 'admin' && !$vehicle->trashed())
-                                                <div class="dropdown">
-                                                    <button class="action-btn status dropdown-toggle"
-                                                            type="button"
-                                                            data-bs-toggle="dropdown"
-                                                            aria-expanded="false"
-                                                            title="Change Status">
-                                                        <i class="fas fa-exchange-alt"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu status-dropdown-menu dropdown-menu-end">
-                                                        <li>
-                                                            <form action="{{ route('vehicles.status', $vehicle->id) }}" method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <input type="hidden" name="status" value="approved">
-                                                                <button type="submit" class="dropdown-item status-dropdown-item {{ $vehicle->status == 'approved' ? 'active' : '' }}">
-                                                                    <i class="fas fa-check-circle text-success"></i>
-                                                                    <span>Approve</span>
-                                                                    @if($vehicle->status == 'approved')
-                                                                        <i class="fas fa-check ms-auto"></i>
-                                                                    @endif
-                                                                </button>
-                                                            </form>
-                                                        </li>
-                                                        <li>
-                                                            <form action="{{ route('vehicles.status', $vehicle->id) }}" method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <input type="hidden" name="status" value="pending">
-                                                                <button type="submit" class="dropdown-item status-dropdown-item {{ $vehicle->status == 'pending' ? 'active' : '' }}">
-                                                                    <i class="fas fa-clock text-warning"></i>
-                                                                    <span>Pending</span>
-                                                                    @if($vehicle->status == 'pending')
-                                                                        <i class="fas fa-check ms-auto"></i>
-                                                                    @endif
-                                                                </button>
-                                                            </form>
-                                                        </li>
-                                                        <li>
-                                                            <form action="{{ route('vehicles.status', $vehicle->id) }}" method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <input type="hidden" name="status" value="rejected">
-                                                                <button type="submit" class="dropdown-item status-dropdown-item {{ $vehicle->status == 'rejected' ? 'active' : '' }}">
-                                                                    <i class="fas fa-times-circle text-danger"></i>
-                                                                    <span>Reject</span>
-                                                                    @if($vehicle->status == 'rejected')
-                                                                        <i class="fas fa-check ms-auto"></i>
-                                                                    @endif
-                                                                </button>
-                                                            </form>
-                                                        </li>
-                                                        <li><hr class="dropdown-divider"></li>
-                                                        <li>
-                                                            <form action="{{ route('vehicles.status', $vehicle->id) }}" method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <input type="hidden" name="status" value="inactive">
-                                                                <button type="submit" class="dropdown-item status-dropdown-item {{ $vehicle->status == 'inactive' ? 'active' : '' }}">
-                                                                    <i class="fas fa-circle text-secondary"></i>
-                                                                    <span>Inactive</span>
-                                                                    @if($vehicle->status == 'inactive')
-                                                                        <i class="fas fa-check ms-auto"></i>
-                                                                    @endif
-                                                                </button>
-                                                            </form>
-                                                        </li>
-                                                        <li>
-                                                            <form action="{{ route('vehicles.status', $vehicle->id) }}" method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <input type="hidden" name="status" value="blacklisted">
-                                                                <button type="submit" class="dropdown-item status-dropdown-item {{ $vehicle->status == 'blacklisted' ? 'active' : '' }}">
-                                                                    <i class="fas fa-ban text-dark"></i>
-                                                                    <span>Blacklist</span>
-                                                                    @if($vehicle->status == 'blacklisted')
-                                                                        <i class="fas fa-check ms-auto"></i>
-                                                                    @endif
-                                                                </button>
-                                                            </form>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            @endif
-
-                                            <!-- Restore (only for archived) -->
-                                            @if($vehicle->trashed())
-                                                <form action="{{ route('vehicles.restore', $vehicle->id) }}"
+                                            <!-- Permanent Delete (Admin Only) -->
+                                            @if(auth()->user()->role === 'resident')
+                                                <form action="{{ route('vehicles.force-delete', $vehicle->id) }}"
                                                       method="POST"
-                                                      class="d-inline restore-form">
+                                                      class="d-inline"
+                                                      onsubmit="return confirm('Permanently delete this vehicle? This cannot be undone!')">
                                                     @csrf
-                                                    @method('PUT')
-                                                    <button type="submit"
-                                                            class="action-btn restore"
-                                                            title="Restore Vehicle"
-                                                            onclick="return confirm('Restore this vehicle?')">
-                                                        <i class="fas fa-trash-restore"></i>
+                                                    @method('DELETE')
+                                                    <button type="submit" class="action-btn delete" title="Delete Permanently">
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
                                             @endif
-
-                                            <!-- Delete (Soft Delete) -->
-                                            @if(auth()->user()->role === 'admin' || $vehicle->user_id === auth()->id())
-                                                @if(!$vehicle->trashed())
-                                                    <form action="{{ route('vehicles.destroy', $vehicle->id) }}"
-                                                          method="POST"
-                                                          class="d-inline delete-form">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                                class="action-btn delete"
-                                                                title="Archive Vehicle"
-                                                                onclick="return confirm('Are you sure you want to archive this vehicle? It can be restored later.')">
-                                                            <i class="fas fa-archive"></i>
-                                                        </button>
-                                                    </form>
-                                                @else
-                                                    @if(auth()->user()->role === 'admin')
-                                                        <!-- Permanent Delete (Admin Only) -->
-                                                        <form action="{{ route('vehicles.force-delete', $vehicle->id) }}"
-                                                              method="POST"
-                                                              class="d-inline force-delete-form">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit"
-                                                                    class="action-btn delete"
-                                                                    title="Permanently Delete"
-                                                                    style="background: #FEE2E2; color: #DC2626;"
-                                                                    onclick="return confirm('WARNING: This will permanently delete the vehicle. This action cannot be undone!')">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                    @endif
-                                                @endif
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             @endif
         </div>
     </div>
 </div>
 
 <!-- Image Preview Modal -->
-<div class="modal fade" id="imagePreviewModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
+<div class="modal fade" id="imageModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="fas fa-image me-2"></i>Vehicle Image</h5>
+                <h5 class="modal-title">
+                    <i class="fas fa-image me-2" style="color: var(--primary);"></i>
+                    Vehicle Image
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body text-center p-4">
-                <img id="previewImg" class="img-fluid rounded" style="max-height: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <div class="modal-body text-center">
+                <img id="modalImage" class="img-fluid rounded" style="max-height: 250px;">
             </div>
         </div>
     </div>
 </div>
 
+<!-- Bulk Action Form -->
+<form id="bulkActionForm" method="POST" style="display: none;">
+    @csrf
+    @method('POST')
+    <input type="hidden" name="ids" id="selectedIds">
+    <input type="hidden" name="action" id="bulkAction">
+</form>
+
 @endsection
 
-@push('styles')
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-@endpush
-
 @push('scripts')
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<!-- DataTables -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-<!-- Bootstrap Bundle (for dropdowns) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- SheetJS for Excel export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- jsPDF for PDF export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- AutoTable for PDF tables -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
 <script>
-    $(document).ready(function () {
-        $('#vehiclesTable').DataTable({
-            responsive: true,
-            pageLength: 10,
-            order: [[0, 'asc']],
-            language: {
-                search: "<i class='fas fa-search'></i> Search:",
-                searchPlaceholder: "Search vehicles...",
-                lengthMenu: "Show _MENU_ entries",
-                info: "Showing _START_ to _END_ of _TOTAL_ vehicles",
-                infoEmpty: "Showing 0 to 0 of 0 vehicles",
-                infoFiltered: "(filtered from _MAX_ total vehicles)",
-                paginate: {
-                    first: '<i class="fas fa-angle-double-left"></i>',
-                    last: '<i class="fas fa-angle-double-right"></i>',
-                    next: '<i class="fas fa-angle-right"></i>',
-                    previous: '<i class="fas fa-angle-left"></i>'
-                }
-            },
-            drawCallback: function() {
-                // Reinitialize dropdowns after table redraw
-                var dropdowns = document.querySelectorAll('.dropdown-toggle');
-                dropdowns.forEach(function(dropdown) {
-                    new bootstrap.Dropdown(dropdown);
-                });
-            }
-        });
+    let selectedRows = new Set();
+    let imageModal;
 
-        // Initialize dropdowns
-        var dropdowns = document.querySelectorAll('.dropdown-toggle');
-        dropdowns.forEach(function(dropdown) {
-            new bootstrap.Dropdown(dropdown);
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+
+        // Load saved selections from localStorage
+        const saved = localStorage.getItem('selectedRows');
+        if (saved) {
+            selectedRows = new Set(JSON.parse(saved));
+            updateUI();
+        }
     });
 
-    function previewImage(src) {
-        document.getElementById('previewImg').src = src;
-        new bootstrap.Modal(document.getElementById('imagePreviewModal')).show();
+    // Toggle Select All
+    function toggleSelectAll() {
+        const selectAll = document.getElementById('selectAll');
+        const checkboxes = document.querySelectorAll('.row-checkbox');
+
+        if (selectedRows.size === checkboxes.length) {
+            // Deselect all
+            selectedRows.clear();
+            selectAll.classList.remove('checked');
+            checkboxes.forEach(cb => cb.classList.remove('checked'));
+        } else {
+            // Select all
+            checkboxes.forEach(cb => {
+                const id = cb.dataset.id;
+                selectedRows.add(id);
+                cb.classList.add('checked');
+            });
+            selectAll.classList.add('checked');
+        }
+
+        updateUI();
     }
 
+    // Toggle individual row
+    function toggleRow(element) {
+        const id = element.dataset.id;
+
+        if (selectedRows.has(id)) {
+            selectedRows.delete(id);
+            element.classList.remove('checked');
+        } else {
+            selectedRows.add(id);
+            element.classList.add('checked');
+        }
+
+        // Update select all checkbox
+        const selectAll = document.getElementById('selectAll');
+        const checkboxes = document.querySelectorAll('.row-checkbox');
+
+        if (selectedRows.size === checkboxes.length) {
+            selectAll.classList.add('checked');
+        } else {
+            selectAll.classList.remove('checked');
+        }
+
+        updateUI();
+    }
+
+    // Update UI based on selections
+    function updateUI() {
+        const count = selectedRows.size;
+        const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+        const bulkRestoreBtn = document.getElementById('bulkRestoreBtn');
+        const isArchive = {{ request()->routeIs('vehicles.archived') ? 'true' : 'false' }};
+
+        if (count > 0) {
+            if (isArchive) {
+                bulkRestoreBtn.style.display = 'inline-flex';
+                bulkRestoreBtn.innerHTML = `<i class="fas fa-trash-restore"></i> Restore Selected (${count})`;
+                bulkDeleteBtn.style.display = 'none';
+            } else {
+                bulkDeleteBtn.style.display = 'inline-flex';
+                bulkDeleteBtn.innerHTML = `<i class="fas fa-trash"></i> Delete Selected (${count})`;
+                bulkRestoreBtn.style.display = 'none';
+            }
+        } else {
+            bulkDeleteBtn.style.display = 'none';
+            bulkRestoreBtn.style.display = 'none';
+        }
+
+        // Save to localStorage
+        localStorage.setItem('selectedRows', JSON.stringify([...selectedRows]));
+    }
+
+    // Bulk Action
+    function bulkAction(action) {
+        if (selectedRows.size === 0) return;
+
+        const message = action === 'delete'
+            ? `Archive ${selectedRows.size} selected vehicle(s)? They can be restored later.`
+            : `Restore ${selectedRows.size} selected vehicle(s)?`;
+
+        if (!confirm(message)) return;
+
+        const form = document.getElementById('bulkActionForm');
+        const ids = [...selectedRows].join(',');
+
+        form.action = action === 'delete'
+            ? '{{ route("vehicles.bulk-delete") }}'
+            : '{{ route("vehicles.bulk-restore") }}';
+
+        document.getElementById('selectedIds').value = ids;
+        document.getElementById('bulkAction').value = action;
+
+        form.submit();
+    }
+
+    // Update Status
+    function updateStatus(selectElement, vehicleId) {
+        const status = selectElement.value;
+        const originalValue = selectElement.classList.contains('active') ? 'active' : 'inactive';
+        const parkingSlotId = selectElement.dataset.parkingSlot === 'null' ? null : selectElement.dataset.parkingSlot;
+        const token = document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}';
+
+        // Show loading state
+        selectElement.disabled = true;
+        selectElement.style.opacity = '0.6';
+
+        fetch(`/vehicles/${vehicleId}/status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token,
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                status: status,
+                parking_slot_id: parkingSlotId
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => Promise.reject(err));
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Update select styling
+                selectElement.className = `status-select ${status}`;
+
+                // Update the stats counters with the new counts from server
+                if (data.counts) {
+                    document.getElementById('totalVehicles').textContent = data.counts.total || '{{ $totalVehicles ?? $vehicles->count() }}';
+                    document.getElementById('activeCount').textContent = data.counts.active;
+                    document.getElementById('inactiveCount').textContent = data.counts.inactive;
+                    document.getElementById('parkingAssigned').textContent = data.counts.parking_assigned;
+                }
+
+                // Show success message
+                showNotification('Status updated successfully', 'success');
+            } else {
+                throw new Error(data.message || 'Failed to update status');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+
+            // Restore the original value
+            selectElement.value = originalValue;
+            selectElement.className = `status-select ${originalValue}`;
+
+            // Show error message
+            let errorMessage = 'Failed to update status';
+            if (error.message) {
+                errorMessage = error.message;
+            } else if (typeof error === 'string') {
+                errorMessage = error;
+            }
+
+            showNotification(errorMessage, 'error');
+        })
+        .finally(() => {
+            // Remove loading state
+            selectElement.disabled = false;
+            selectElement.style.opacity = '1';
+        });
+    }
+
+    // Preview Image
+    function previewImage(src) {
+        document.getElementById('modalImage').src = src;
+        imageModal.show();
+    }
+
+    // Toggle Archive View
     function toggleArchive() {
         window.location.href = "{{ request()->routeIs('vehicles.archived') ? route('vehicles.index') : route('vehicles.archived') }}";
     }
 
-    // Add loading effect on form submit
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function() {
-            const btn = this.querySelector('button[type="submit"]');
-            if (btn) {
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                btn.disabled = true;
+    // Show Notification
+    function showNotification(message, type = 'success') {
+        // Remove any existing notification
+        const existingNotification = document.querySelector('.notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}" style="color: ${type === 'success' ? 'var(--success)' : 'var(--danger)'};"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        // Add to document
+        document.body.appendChild(notification);
+
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideIn 0.3s reverse';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
+    // Export Table
+    function exportTable(format) {
+        const table = document.getElementById('vehiclesTable');
+        const data = [];
+
+        // Get headers
+        const headers = [];
+        table.querySelectorAll('thead th').forEach((th, index) => {
+            if (index > 0 && index < 6) { // Skip checkbox and actions columns
+                headers.push(th.textContent.trim());
             }
         });
+        data.push(headers);
+
+        // Get data
+        table.querySelectorAll('tbody tr').forEach(row => {
+            const rowData = [];
+            const cells = row.querySelectorAll('td');
+
+            // Vehicle Details (index 3)
+            const vehicleDetails = cells[3].textContent.trim().replace(/\s+/g, ' ');
+
+            rowData.push(cells[1].textContent.trim()); // #
+            rowData.push(vehicleDetails); // Vehicle Details
+            rowData.push(cells[4].textContent.trim()); // Owner
+            rowData.push(cells[5].textContent.trim()); // Status
+
+            data.push(rowData);
+        });
+
+        if (format === 'excel') {
+            exportToExcel(data);
+        } else if (format === 'pdf') {
+            exportToPDF(data);
+        }
+    }
+
+    // Export to Excel
+    function exportToExcel(data) {
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        XLSX.utils.book_append_sheet(wb, ws, 'Vehicles');
+        XLSX.writeFile(wb, `vehicles_${new Date().toISOString().split('T')[0]}.xlsx`);
+    }
+
+    // Export to PDF
+    function exportToPDF(data) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFontSize(16);
+        doc.setTextColor(37, 99, 235);
+        doc.text('Vehicle List', 14, 20);
+
+        doc.setFontSize(10);
+        doc.setTextColor(100, 116, 139);
+        doc.text(`Generated: ${new Date().toLocaleDateString()}`, 14, 28);
+
+        doc.autoTable({
+            head: [data[0]],
+            body: data.slice(1),
+            startY: 35,
+            theme: 'striped',
+            headStyles: {
+                fillColor: [37, 99, 235],
+                textColor: [255, 255, 255],
+                fontStyle: 'bold'
+            },
+            styles: {
+                fontSize: 9,
+                cellPadding: 5
+            },
+            columnStyles: {
+                0: { cellWidth: 15 },
+                1: { cellWidth: 50 },
+                2: { cellWidth: 50 },
+                3: { cellWidth: 40 }
+            }
+        });
+
+        doc.save(`vehicles_${new Date().toISOString().split('T')[0]}.pdf`);
+    }
+
+    // Clear selections on page unload
+    window.addEventListener('beforeunload', function() {
+        localStorage.removeItem('selectedRows');
     });
 </script>
 @endpush

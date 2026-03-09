@@ -24,12 +24,12 @@ class Resident extends Model
     {
         return $this->hasMany(Visitor::class);
     }
-    
+
      public function flat()
     {
         return $this->belongsTo(Flat::class);
     }
-    
+
     // Resident.php
     public function tower() {
         return $this->belongsTo(Tower::class);
@@ -43,9 +43,13 @@ class Resident extends Model
             return $this->hasMany(Vehicle::class);
         }
 
-public function user()
-{
-    return $this->belongsTo(User::class);
-}
+        public function user()
+        {
+            return $this->belongsTo(User::class);
+        }
 
+        public function familyMembers()
+        {
+            return $this->hasMany(FamilyMember::class, 'resident_id', 'id');
+        }
 }

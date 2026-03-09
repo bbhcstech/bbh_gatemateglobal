@@ -72,10 +72,18 @@ public function store(Request $request)
 }
 
 
-    public function show(Resident $resident)
-    {
-        return view('admin.residents.show', compact('resident'));
-    }
+    // public function show(Resident $resident)
+    // {
+    //     return view('admin.residents.show', compact('resident'));
+    // }
+
+
+        public function show($id)
+        {
+            $resident = Resident::with('familyMembers.relation')->find($id);
+
+            return view('resident.profile', compact('resident'));
+        }
 
     public function edit(Resident $resident)
     {
@@ -117,7 +125,7 @@ public function store(Request $request)
         return redirect()->route('residents.index')
             ->with('success', 'Resident deleted successfully');
     }
-    
+
     public function getFloors($towerId)
     {
         return Floor::where('tower_id', $towerId)
@@ -133,7 +141,7 @@ public function store(Request $request)
             ->orderBy('flat_no')
             ->get();
     }
-    
+
      public function getParking($flat_id)
     {
         $parking = ParkingLot::where('flat_id', $flat_id)->get();

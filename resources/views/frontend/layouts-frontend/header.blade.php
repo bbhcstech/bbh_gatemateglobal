@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Index - Socity Mangement System Bootstrap Template</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <title>@yield('title', 'GateMateGlobal - Smart Society Management Software in India')</title>
+  <meta name="description" content="The Official App for your Residential Community. Zero Ads. Zero Spam. Built with DPDP-ready data privacy for RWAs.">
+  <meta name="keywords" content="society management software, apartment management, RWA software, community app">
 
   <!-- Favicons -->
   <link href="{{ asset('frontend/assets/img/favicon.png')}}" rel="icon">
@@ -15,7 +15,7 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="{{ asset('frontend/assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -27,75 +27,159 @@
   <!-- Main CSS File -->
   <link href="{{ asset('frontend/assets/css/main.css')}}" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: eNno
-  * Template URL: https://bootstrapmade.com/enno-free-simple-bootstrap-template/
-  * Updated: Aug 07 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #7c3aed;
+      --accent: #06b6d4;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --gray: #64748b;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 1rem 0;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .header.scrolled {
+      padding: 0.5rem 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-link {
+      color: var(--dark) !important;
+      font-weight: 500;
+      padding: 0.5rem 1rem !important;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--primary) !important;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 70%;
+    }
+
+    .btn-primary-custom {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+      border: none;
+    }
+
+    .btn-primary-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
+      color: white;
+    }
+
+    .btn-outline-custom {
+      background: transparent;
+      color: var(--primary);
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-custom:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 991px) {
+      .navbar-collapse {
+        background: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-top: 1rem;
+      }
+
+      .nav-link::after {
+        display: none;
+      }
+    }
+  </style>
 </head>
-<style>
-  .custom-btn {
-    background-color: #7c1f8c !important;
-    color: #ffffff !important;
-    border: none; /* optional, removes border */
-     padding: 0.3rem 0.8rem; /* smaller height */
-  font-size: 0.9rem; /* slightly smaller text */
-}
 
-.custom-btn:hover {
-    background-color: #6a1878 !important; /* a slightly darker shade on hover */
-    color: #ffffff !important;
-}
+<body>
+  <header id="header" class="header fixed-top">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid p-0">
+          <a class="navbar-brand logo" href="/">GateMateGlobal</a>
 
-</style>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-<body class="index-page">
-
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center">
-
-      <a href="index.html" class="logo d-flex align-items-center me-auto">
-        
-        <h1 class="sitename">Socity Mangement System</h1>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="#hero" class="active">Home</a></li>
-          <!-- <li><a href="#about">QR Scanner</a></li>
-          <li><a href="#services">Pricing</a></li>
-          <li><a href="#portfolio">Compare</a></li>
-          <li><a href="#team">FAQ</a></li>
-          <li><a href="#team">Support</a></li>
-          <li class="dropdown">
-           <a class="btn custom-btn ps-3 pe-3 rounded-pill d-flex align-items-center text-nowrap" 
-              href="/qr-code-generator" id="createNewBtnHeader">
-              <span>Create QR Code</span> 
-              <i class="bi bi-chevron-down toggle-dropdown ms-2"></i>
-            </a>
-
-
-            <ul>
-              <li><a href="#">URL / Link  </a></li>          
-              <li><a href="#">PDF</a></li>
-              <li><a href="#">Image</a></li>
-              <li><a href="#">App Markets</a></li>
-              <li><a href="#">Text</a></li>
-              <li><a href="#">Maps</a></li>
-              <li><a href="#">Wi-Fi</a></li>
-              <li><a href="#">Audio</a></li>
-              <li><a href="#">WhatsApp</a></li>
-              <li><a href="#">YouTube</a></li> 
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+              <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+              <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+              <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+              <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
+              <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+              <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+              <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+              <li class="nav-item ms-lg-3">
+                <a class="btn-primary-custom" href="{{ route('login') }}">Get Started</a>
+              </li>
+              <li class="nav-item ms-lg-2">
+                <a class="btn-outline-custom" href="#demo">Live Demo</a>
+              </li>
             </ul>
-          </li> -->
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+          </div>
+        </div>
       </nav>
-
-      <a class="btn-getstarted" href="{{ route('login') }}">Get Started</a>
-
     </div>
   </header>
