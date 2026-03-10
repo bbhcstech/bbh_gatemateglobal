@@ -500,6 +500,14 @@
         </div>
         <!-- In the header section of your index.blade.php, update the toolbar -->
             <div div class="toolbar">
+
+            <!-- In the toolbar section, add this button for residents -->
+                @if(auth()->check() && strtolower(optional(auth()->user()->roleMaster)->role_name) === 'resident')
+                    <a href="{{ route('vehicles.all-residents') }}" class="btn btn-info">
+                        <i class="fas fa-users me-2"></i>
+                        View All Residents' Vehicles
+                    </a>
+                @endif
                 <!-- Archive Button -->
             <a href="{{ route('vehicles.archived') }}" class="btn btn-outline">
                     <i class="fas fa-archive me-2"></i>

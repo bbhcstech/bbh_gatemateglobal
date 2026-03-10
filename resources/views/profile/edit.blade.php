@@ -37,7 +37,7 @@
 
       <section class="section profile">
         <div class="row">
-        
+
 
           <div class="col-xl-8">
 
@@ -46,7 +46,7 @@
                 <!-- Bordered Tabs -->
                 <ul class="nav nav-tabs nav-tabs-bordered">
 
-              
+
 
                 <li class="nav-item">
                     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Edit Profile</button>
@@ -56,12 +56,12 @@
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button>
                   </li>
 
-                
+
 
                 </ul>
                 <div class="tab-content pt-2">
 
-              
+
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
 
                     <!-- Profile Edit Form -->
@@ -94,7 +94,7 @@
 
                   </div>
 
-                  
+
 
                 </div><!-- End Bordered Tabs -->
 

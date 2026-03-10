@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes; // ADD THIS IMPORT
 
 class FamilyMember extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes; // ADD SoftDeletes HERE
 
     protected $primaryKey = 'member_id';
 
@@ -29,7 +30,7 @@ class FamilyMember extends Model
     protected $casts = [
         'activity_status' => 'boolean',
         'deleted_status' => 'boolean',
-        'deleted_at' => 'datetime',
+        'deleted_at' => 'datetime', // This will work with SoftDeletes
     ];
 
     // Relationships
@@ -64,5 +65,22 @@ class FamilyMember extends Model
     {
         return $query->where('activity_status', 1)
                      ->where('deleted_status', 0);
+    }
+
+    // OPTIONAL: If you want to automatically set deleted_by when soft deleting
+    protected static function booted()
+    {
+        static::deleting(function ($familyMember) {
+            if (auth()->check()) {
+                $familyMember->deleted_by = auth()->id();
+                $familyMember->deleted_status = 1;
+                $familyMember->save();
+            }
+        });
+
+        static::restoring(function ($familyMember) {
+            $familyMember->deleted_by = null;
+            $familyMember->deleted_status = 0;
+        });
     }
 }

@@ -89,6 +89,37 @@ Route::middleware('auth')->group(function () {
 
 
 
+   // Profile routes
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/picture', [ProfileController::class, 'updatePicture'])->name('profile.update.picture');
+    Route::patch('/profile/notifications', [ProfileController::class, 'updateNotifications'])->name('profile.notifications.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Family Members Routes
+    Route::post('/profile/family', [FamilyMemberController::class, 'store'])->name('profile.family.store');
+    Route::get('/profile/family/{id}/edit', [FamilyMemberController::class, 'edit'])->name('profile.family.edit');
+    Route::put('/profile/family/{id}', [FamilyMemberController::class, 'update'])->name('profile.family.update');
+    Route::delete('/profile/family/{id}', [FamilyMemberController::class, 'destroy'])->name('profile.family.destroy');
+
+    // Pets Routes
+    Route::post('/profile/pets', [PetController::class, 'store'])->name('profile.pets.store');
+    Route::get('/profile/pets/{id}/edit', [PetController::class, 'edit'])->name('profile.pets.edit');
+    Route::put('/profile/pets/{id}', [PetController::class, 'update'])->name('profile.pets.update');
+    Route::delete('/profile/pets/{id}', [PetController::class, 'destroy'])->name('profile.pets.destroy');
+
+    // Vehicles Routes
+    Route::post('/profile/vehicles', [VehicleController::class, 'store'])->name('profile.vehicles.store');
+    Route::get('/profile/vehicles/{id}/edit', [VehicleController::class, 'edit'])->name('profile.vehicles.edit');
+    Route::put('/profile/vehicles/{id}', [VehicleController::class, 'update'])->name('profile.vehicles.update');
+    Route::delete('/profile/vehicles/{id}', [VehicleController::class, 'destroy'])->name('profile.vehicles.destroy');
+});
+
+
+
+
+
 /* ================= SECURITY ================= */
 
 
@@ -140,35 +171,33 @@ Route::resource('pets', PetController::class);
 // Route::delete('pets/{id}/force-delete', [PetController::class, 'forceDelete'])->name('pets.force-delete');
 // Route::patch('pets/{id}/vaccination', [PetController::class, 'updateVaccination'])->name('pets.vaccination');
 
-
-
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     // Pet Management Routes
-    Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
-    Route::get('/pets/archived', [PetController::class, 'archived'])->name('pets.archived');
-    Route::get('/pets/create', [PetController::class, 'create'])->name('pets.create');
-    Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
-    Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
-    Route::get('/pets/{pet}/edit', [PetController::class, 'edit'])->name('pets.edit');
-    Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
-    Route::delete('/pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
-    Route::put('/pets/{pet}/restore', [PetController::class, 'restore'])->name('pets.restore');
-    Route::delete('/pets/{pet}/force-delete', [PetController::class, 'forceDelete'])->name('pets.force-delete');
-       // Add this route for archived show
-    Route::get('/pets/archived/{id}', [PetController::class, 'archivedShow'])->name('pets.archived-show');
-    Route::get('/pets/all-residents', [PetController::class, 'allResidents'])->name('pets.all-residents');
-  Route::get('/resident/profile/{id}', [App\Http\Controllers\ResidentController::class, 'profile'])->name('residents.profile');
+    Route::prefix('pets')->name('pets.')->group(function () {
+        // Fixed routes (no parameters) - MUST come first
+        Route::get('/', [PetController::class, 'index'])->name('index');
+        Route::get('/archived', [PetController::class, 'archived'])->name('archived');
+        Route::get('/create', [PetController::class, 'create'])->name('create');
+        Route::get('/all-residents', [PetController::class, 'allResidents'])->name('all-residents');
 
-    // Add this route for status updates
-    Route::patch('/pets/{pet}/status', [PetController::class, 'toggleStatus'])->name('pets.status');
+        // Routes with parameters - MUST come after fixed routes
+        Route::get('/archived/{id}', [PetController::class, 'archivedShow'])->name('archived-show');
+        Route::get('/{pet}', [PetController::class, 'show'])->name('show');
+        Route::get('/{pet}/edit', [PetController::class, 'edit'])->name('edit');
+        Route::post('/', [PetController::class, 'store'])->name('store');
+        Route::put('/{pet}', [PetController::class, 'update'])->name('update');
+        Route::delete('/{pet}', [PetController::class, 'destroy'])->name('destroy');
+        Route::put('/{pet}/restore', [PetController::class, 'restore'])->name('restore');
+        Route::delete('/{pet}/force-delete', [PetController::class, 'forceDelete'])->name('force-delete');
+        Route::patch('/{pet}/status', [PetController::class, 'toggleStatus'])->name('status');
+        Route::post('/bulk-delete', [PetController::class, 'bulkDelete'])->name('bulk-delete');
+        Route::post('/bulk-restore', [PetController::class, 'bulkRestore'])->name('bulk-restore');
+        Route::patch('/{id}/toggle-dangerous', [PetController::class, 'toggleDangerous'])->name('toggle-dangerous');
+    }); // <-- This closing brace was missing!
 
-    // Bulk operations
-    Route::post('/pets/bulk-delete', [PetController::class, 'bulkDelete'])->name('pets.bulk-delete');
-    Route::post('/pets/bulk-restore', [PetController::class, 'bulkRestore'])->name('pets.bulk-restore');
-    // Toggle dangerous status - Admin only
-    Route::patch('/pets/{id}/toggle-dangerous', [PetController::class, 'toggleDangerous'])->name('pets.toggle-dangerous');
+    // Resident profile route
+    Route::get('/resident/profile/{id}', [App\Http\Controllers\ResidentController::class, 'profile'])->name('residents.profile');
 });
-
 
 // ===========================================
 // HELP ATTENDANCE ROUTE
@@ -182,7 +211,7 @@ Route::get('/help-attendance', [HelpAttendanceController::class, 'index'])
 Route::middleware(['auth'])->group(function () {
 
     // ===========================================
-    // BASIC CRUD ROUTES (Individual manual routes)
+    // BASIC CRUD ROUTES (no parameters)
     // ===========================================
 
     // LIST family members (with search)
@@ -193,13 +222,30 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/family-members/search', [FamilyMemberController::class, 'searchResidents'])
         ->name('family-members.search');
 
-    // CREATE form - Add family member
-    Route::get('/family-members/create', [FamilyMemberController::class, 'create'])
-        ->name('family-members.create');
+  Route::get('/family-members/create', [FamilyMemberController::class, 'create'])
+    ->name('family-members.create');
 
     // STORE new family member
     Route::post('/family-members', [FamilyMemberController::class, 'store'])
         ->name('family-members.store');
+
+    // ===========================================
+    // FIXED ROUTES (no parameters) - MUST come BEFORE parameter routes
+    // ===========================================
+
+    // ALL RESIDENTS FAMILIES ROUTE
+   Route::get('/family-members/all-residents', [FamilyMemberController::class, 'allResidents'])->name('family-members.all-residents');
+
+    // ARCHIVED ROUTES - Place these BEFORE any {parameter} routes
+    Route::get('/family-members/archived', [FamilyMemberController::class, 'archived'])
+        ->name('family-members.archived');
+
+    Route::get('/family-members/archived/{id}', [FamilyMemberController::class, 'archivedShow'])
+        ->name('family-members.archived-show');
+
+    // ===========================================
+    // PARAMETER ROUTES - MUST come AFTER all fixed routes
+    // ===========================================
 
     // SHOW specific family member
     Route::get('/family-members/{familyMember}', [FamilyMemberController::class, 'show'])
@@ -217,49 +263,23 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/family-members/{familyMember}', [FamilyMemberController::class, 'destroy'])
         ->name('family-members.destroy');
 
-    // ===========================================
-    // BULK ACTIONS ROUTES (Manual definitions)
-    // ===========================================
-
-    // BULK ARCHIVE - Archive multiple family members
-    Route::post('/family-members/bulk-archive', [FamilyMemberController::class, 'bulkArchive'])
-        ->name('family-members.bulk-archive');
-
-    // BULK RESTORE - Restore multiple archived family members
-    Route::post('/family-members/bulk-restore', [FamilyMemberController::class, 'bulkRestore'])
-        ->name('family-members.bulk-restore');
-
-    // BULK DELETE - Permanently delete multiple family members
-    Route::post('/family-members/bulk-delete', [FamilyMemberController::class, 'bulkDelete'])
-        ->name('family-members.bulk-delete');
-
-    // ===========================================
-    // ARCHIVE/RESTORE INDIVIDUAL ROUTES
-    // ===========================================
-
-    // RESTORE - Restore a single archived family member
-    Route::post('/family-members/{id}/restore', [FamilyMemberController::class, 'restore'])
+    // RESTORE soft deleted family member
+    Route::put('/family-members/{id}/restore', [FamilyMemberController::class, 'restore'])
         ->name('family-members.restore');
 
-    // FORCE DELETE - Permanently delete a single family member
+    // FORCE DELETE permanently
     Route::delete('/family-members/{id}/force-delete', [FamilyMemberController::class, 'forceDelete'])
         ->name('family-members.force-delete');
 
-    // ===========================================
-    // ADDITIONAL FEATURES (if needed)
-    // ===========================================
+    // BULK OPERATIONS
+    Route::post('/family-members/bulk-delete', [FamilyMemberController::class, 'bulkDelete'])
+        ->name('family-members.bulk-delete');
 
-    // EXPORT - Export family members data
-    Route::get('/family-members/export', [FamilyMemberController::class, 'export'])
-        ->name('family-members.export');
+    Route::post('/family-members/bulk-restore', [FamilyMemberController::class, 'bulkRestore'])
+        ->name('family-members.bulk-restore');
 
-    // BULK EMAIL - Send email to multiple family members
-    Route::post('/family-members/bulk-email', [FamilyMemberController::class, 'bulkEmail'])
-        ->name('family-members.bulk-email');
-
-    // SEARCH RESIDENTS - Alternative search endpoint
-    Route::get('/family-members/search-residents', [FamilyMemberController::class, 'searchResidents'])
-        ->name('family-members.search-residents');
+    Route::delete('/family-members/bulk-force-delete', [FamilyMemberController::class, 'bulkForceDelete'])
+        ->name('family-members.bulk-force-delete');
 });
 
 // ===========================================
@@ -403,6 +423,9 @@ Route::get('security-guards/{id}/reset', [SecurityGuardController::class,'resetP
 
     /* ============= VEHICLE ROUTES (FIXED) ============= */
     // Archive & Restore Routes - MUST come before resource
+
+        // ALL RESIDENTS VEHICLES ROUTE - MAKE SURE THIS LINE EXISTS
+         Route::get('/vehicles/all-residents', [VehicleController::class, 'allResidents'])->name('vehicles.all-residents');
     Route::get('/vehicles/archived', [VehicleController::class, 'archived'])->name('vehicles.archived');
     Route::put('/vehicles/{id}/restore', [VehicleController::class, 'restore'])->name('vehicles.restore');
     Route::delete('/vehicles/{id}/force-delete', [VehicleController::class, 'forceDelete'])->name('vehicles.force-delete');
@@ -419,8 +442,13 @@ Route::get('security-guards/{id}/reset', [SecurityGuardController::class,'resetP
     Route::post('/vehicles/bulk-delete', [VehicleController::class, 'bulkDelete'])->name('vehicles.bulk-delete');
     Route::post('/vehicles/bulk-restore', [VehicleController::class, 'bulkRestore'])->name('vehicles.bulk-restore');
 
+
+
     // Resource Route - This creates all CRUD routes automatically
     Route::resource('vehicles', VehicleController::class);
+
+
+
 
     Route::resource('residents', ResidentController::class);
 

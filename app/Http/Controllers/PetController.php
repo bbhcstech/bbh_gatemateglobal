@@ -482,29 +482,28 @@ public function toggleDangerous($id)
     return redirect()->back()->with('success', "Pet {$status} successfully");
 }
 
-/**
- * Show all residents' pets (for residents to view)
- */
-public function allResidents()
-{
-    $user = auth()->user();
-    $userRole = strtolower($user->roleMaster->role_name ?? '');
+ /**
+     * Show all residents' pets
+     */
+    public function allResidents()
+    {
+        $user = auth()->user();
+        $userRole = strtolower($user->roleMaster->role_name ?? $user->role ?? '');
 
-    // Only residents can access this page
-    if ($userRole !== 'resident') {
-        return redirect()->route('pets.index')
-            ->with('error', 'Unauthorized access');
+        // Check if user has access (residents can view all pets)
+        if ($userRole !== 'resident' && $userRole !== 'admin' && $userRole !== 'security') {
+            return redirect()->route('pets.index')
+                ->with('error', 'Unauthorized access');
+        }
+
+        // Get all pets with their residents and flats
+        $pets = Pet::with(['resident', 'flat'])
+            ->whereNull('deleted_at')
+            ->latest()
+            ->get();
+
+        return view('admin.pets.all-residents', compact('pets'));
     }
-
-    // Get all active pets with resident and flat info
-    $pets = Pet::with(['resident', 'flat'])
-        ->whereNull('deleted_at')
-        ->latest()
-        ->get();
-
-    return view('admin.pets.all-residents', compact('pets'));
-}
-
     /**
      * Bulk restore pets
      */

@@ -416,6 +416,29 @@ public function toggleStatus(Request $request, $id)
         }
     }
 
+    /**
+ * Show all residents' vehicles (for residents to view)
+ */
+public function allResidents()
+{
+    $user = auth()->user();
+    $userRole = strtolower($user->roleMaster->role_name ?? '');
+
+    // Only residents can access this page
+    if ($userRole !== 'resident') {
+        return redirect()->route('vehicles.index')
+            ->with('error', 'Unauthorized access');
+    }
+
+    // Get all active vehicles with resident and flat info
+    $vehicles = Vehicle::with(['resident', 'resident.flat', 'parkingSlot'])
+        ->whereNull('deleted_at')
+        ->latest()
+        ->get();
+
+    return view('admin.vehicles.all-residents', compact('vehicles'));
+}
+
 
 
 }

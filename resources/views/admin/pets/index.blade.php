@@ -609,7 +609,7 @@ function getPetImageUrl($image) {
             <p>Manage all resident pets and vaccination records</p>
         </div>
         <div class="toolbar">
-            <!-- View All Residents Pets Button (Only for Residents) -->
+           <!-- View All Residents Pets Button (Only for Residents) -->
             @if(auth()->check() && strtolower(optional(auth()->user()->roleMaster)->role_name) === 'resident')
                 <a href="{{ route('pets.all-residents') }}" class="btn btn-info">
                     <i class="fas fa-users me-2"></i>
