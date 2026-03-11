@@ -11,10 +11,11 @@ class Flat extends Model
     {
         return $this->belongsTo(Floor::class);
     }
-    
+
     public function parkingLots()
     {
         return $this->hasMany(ParkingLot::class);
     }
 
 }
+

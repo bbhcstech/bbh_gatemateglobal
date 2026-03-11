@@ -1,18 +1,14 @@
 <?php
+// app/Http/Controllers/ProfileController.php
 
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\ProfilePicture;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Models\Document;
-use App\Models\User;
-use App\Models\ProfilePicture;
-use App\Models\FamilyMember;
-use App\Models\Pet;
-use App\Models\Vehicle;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -21,34 +17,37 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+
+    /**
+     * Display the user's profile form.
+     */
     public function edit(Request $request): View
     {
-        if (in_array(
-            strtolower(optional(auth()->user()->roleMaster)->role_name),
-            ['admin', 'resident', 'security']
-        )) {
-            // Load user with all relationships including family members, pets, and vehicles
-            $user = User::with([
-                'profilePicture',
-                'document',
-                'familyMembers',
-                'pets',
-                'vehicles'
-            ])->findOrFail(auth()->id());
+        // Load user with all relationships
+        $user = Auth::user()->load([
+            'profilePicture',
+            'document',
+            'familyMembers',
+            'pets',
+            'vehicles',
+            'flat' // Load flat relationship
+        ]);
 
-            // Debug info - you can remove this in production
-            if ($user->profilePicture) {
-                \Log::info('Profile picture loaded for user ' . $user->id . ': ' . $user->profilePicture->file_path);
-            }
-
-            return view('profile.edit', compact('user'));
+        // If flat exists, load its relationships separately
+        if ($user->flat) {
+            // Load floor with tower through a separate query
+            $user->flat->load('floor.tower');
         }
 
-        abort(403, 'Unauthorized access');
+        // For debugging - you can remove this in production
+        \Log::info('Profile loaded for user: ' . $user->id);
+
+        return view('profile.edit', compact('user'));
     }
 
     /**
-     * Update the user's profile information.
+     * Update the user's profile information dynamically.
+     * This handles ALL profile fields via AJAX or normal form
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
@@ -56,76 +55,61 @@ class ProfileController extends Controller
 
         try {
             $user = $request->user();
+
+            // Fill all validated data
             $user->fill($request->validated());
 
+            // Handle email verification reset
             if ($user->isDirty('email')) {
                 $user->email_verified_at = null;
             }
 
-            // PROFILE PICTURE UPLOAD
-            if ($request->file('profile_pic') && $request->file('profile_pic')->isValid()) {
-
-                $image = $request->file('profile_pic');
-                $imageName = time() . '_' . uniqid() . '_profile.' . $image->extension();
-                $image->move(public_path('uploads/profile'), $imageName);
-                $path = 'uploads/profile/' . $imageName;
-
-                $profile = ProfilePicture::create([
-                    'user_id' => $user->id,
-                    'file_path' => $path,
-                    'name' => $imageName,
-                    'activity_status' => 1,
-                    'deleted_status' => 0,
-                    'created_by' => auth()->id(),
-                    'created_on' => now(),
-                ]);
-
-                $user->profile_pic_id = $profile->profile_pic_id;
-            }
-
-            // DOCUMENT UPLOAD (keep as is)
-            if ($request->file('documents') && $request->file('documents')->isValid()) {
-                $doc = $request->file('documents');
-                $docName = time() . '_document.' . $doc->extension();
-                $doc->move(public_path('uploads/documents'), $docName);
-
-                $document = Document::create([
-                    'name' => $docName,
-                    'user_id' => $user->id,
-                    'file_path' => 'uploads/documents/' . $docName,
-                    'activity_status' => 1,
-                    'deleted_status' => 0,
-                    'created_by' => auth()->id(),
-                    'created_on' => now(),
-                ]);
-
-                $user->documents_id = $document->documents_id;
-            }
-
             $user->save();
+
             DB::commit();
 
-            return Redirect::route('profile.edit')->with('status', 'profile-updated');
+            // If AJAX request, return JSON response
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Profile updated successfully!',
+                    'user' => $user
+                ]);
+            }
+
+            return Redirect::route('profile.edit')
+                ->with('status', 'profile-updated')
+                ->with('success', 'Profile updated successfully!');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            throw $e;
+            \Log::error('Profile update failed: ' . $e->getMessage());
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to update profile. Please try again.'
+                ], 500);
+            }
+
+            return Redirect::route('profile.edit')
+                ->with('error', 'Failed to update profile. Please try again.');
         }
     }
 
     /**
-     * Update profile picture separately (for the camera icon upload)
+     * Update profile picture (AJAX supported)
      */
     public function updatePicture(Request $request): RedirectResponse
     {
         $request->validate([
-            'profile_pic' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120' // Increased to 5MB
+            'profile_pic' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120'
         ]);
 
         DB::beginTransaction();
 
         try {
-            $user = auth()->user();
+            $user = Auth::user();
 
             // Ensure upload directory exists
             $uploadPath = public_path('uploads/profile');
@@ -133,40 +117,97 @@ class ProfileController extends Controller
                 mkdir($uploadPath, 0755, true);
             }
 
-            if ($request->file('profile_pic') && $request->file('profile_pic')->isValid()) {
+            // Upload image
+            $image = $request->file('profile_pic');
+            $imageName = time() . '_' . uniqid() . '_profile.' . $image->extension();
+            $image->move($uploadPath, $imageName);
+            $path = 'uploads/profile/' . $imageName;
 
-                $image = $request->file('profile_pic');
-                $imageName = time() . '_' . uniqid() . '_profile.' . $image->extension();
-                $image->move($uploadPath, $imageName);
-                $path = 'uploads/profile/' . $imageName;
-
-                // Create new record in profile_pictures table
-                $profile = ProfilePicture::create([
-                    'user_id' => $user->id,
+            // Update or create profile picture record
+            $profile = ProfilePicture::updateOrCreate(
+                ['user_id' => $user->id],
+                [
                     'file_path' => $path,
                     'name' => $imageName,
                     'activity_status' => 1,
                     'deleted_status' => 0,
-                    'created_by' => auth()->id(),
-                    'created_on' => now(),
-                ]);
+                    'modified_by' => auth()->id(),
+                    'modified_on' => now(),
+                ]
+            );
 
-                // Update user's profile_pic_id to point to the new record
-                $user->profile_pic_id = $profile->profile_pic_id;
-                $user->save();
-
-                // IMPORTANT: Refresh the user model with relationships
-                $user->load('profilePicture');
-            }
+            // Update user's profile_pic_id
+            $user->profile_pic_id = $profile->profile_pic_id;
+            $user->save();
 
             DB::commit();
 
-            return Redirect::route('profile.edit')->with('status', 'profile-picture-updated');
+            // For AJAX requests
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Profile picture updated!',
+                    'image_url' => asset($path)
+                ]);
+            }
+
+            return Redirect::route('profile.edit')
+                ->with('status', 'profile-picture-updated');
 
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Profile picture upload failed: ' . $e->getMessage());
-            return Redirect::route('profile.edit')->with('error', 'Failed to update profile picture. Please try again.');
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to update profile picture.'
+                ], 500);
+            }
+
+            return Redirect::route('profile.edit')
+                ->with('error', 'Failed to update profile picture. Please try again.');
+        }
+    }
+
+    /**
+     * Update field dynamically (for inline editing)
+     */
+    public function updateField(Request $request)
+    {
+        $request->validate([
+            'field' => 'required|string',
+            'value' => 'nullable|string|max:500'
+        ]);
+
+        try {
+            $user = Auth::user();
+            $field = $request->field;
+            $value = $request->value;
+
+            // Check if field exists in fillable
+            if (!in_array($field, $user->getFillable())) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Field cannot be updated.'
+                ], 400);
+            }
+
+            $user->$field = $value;
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Field updated!',
+                'field' => $field,
+                'value' => $value
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Update failed: ' . $e->getMessage()
+            ], 500);
         }
     }
 
@@ -181,14 +222,22 @@ class ProfileController extends Controller
             'whatsapp_notifications' => 'sometimes|boolean',
         ]);
 
-        $user = auth()->user();
+        $user = Auth::user();
 
         $user->email_notifications = $request->boolean('email_notifications');
         $user->sms_notifications = $request->boolean('sms_notifications');
         $user->whatsapp_notifications = $request->boolean('whatsapp_notifications');
         $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'notifications-updated');
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Notification settings updated!'
+            ]);
+        }
+
+        return Redirect::route('profile.edit')
+            ->with('status', 'notifications-updated');
     }
 
     /**

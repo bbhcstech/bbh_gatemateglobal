@@ -56,15 +56,35 @@ Route::get('/getfloors/{tower}', [ResidentController::class, 'getFloors']);
 Route::get('/getflats/{floor}', [ResidentController::class, 'getFlats']);
 
 
+
+
+
+
   Route::resource('admin/complaints', ComplaintController::class);
 
 
 
-// web.php
-Route::PUT('complaints/{complaint}/status', [ComplaintController::class, 'updateStatus'])
-     ->name('complaints.updateStatus')
-     ->middleware('auth');
+// // web.php
+// Route::PUT('complaints/{complaint}/status', [ComplaintController::class, 'updateStatus'])
+//      ->name('complaints.updateStatus')
+//      ->middleware('auth');
 
+// Complaints Management Routes
+Route::prefix('complaints')->name('complaints.')->group(function () {
+    Route::get('/', [App\Http\Controllers\ComplaintController::class, 'index'])->name('index');
+    Route::get('/create', [App\Http\Controllers\ComplaintController::class, 'create'])->name('create');
+    Route::post('/', [App\Http\Controllers\ComplaintController::class, 'store'])->name('store');
+    Route::get('/archived', [App\Http\Controllers\ComplaintController::class, 'archived'])->name('archived');
+    Route::get('/all-residents', [App\Http\Controllers\ComplaintController::class, 'allResidents'])->name('all-residents');
+    Route::get('/{id}', [App\Http\Controllers\ComplaintController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [App\Http\Controllers\ComplaintController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [App\Http\Controllers\ComplaintController::class, 'update'])->name('update');
+    Route::delete('/{id}', [App\Http\Controllers\ComplaintController::class, 'destroy'])->name('destroy');
+    Route::patch('/{id}/status', [App\Http\Controllers\ComplaintController::class, 'updateStatus'])->name('update-status');
+    Route::post('/{id}/confirm-resolution', [App\Http\Controllers\ComplaintController::class, 'confirmResolution'])->name('confirm-resolution');
+    Route::post('/bulk-delete', [App\Http\Controllers\ComplaintController::class, 'bulkDelete'])->name('bulk-delete');
+    Route::post('/bulk-status', [App\Http\Controllers\ComplaintController::class, 'bulkStatusUpdate'])->name('bulk-status');
+});
 
 Route::middleware('auth')->group(function () {
 
@@ -89,13 +109,22 @@ Route::middleware('auth')->group(function () {
 
 
 
-   // Profile routes
 Route::middleware('auth')->group(function () {
+
+    Route::get('/residents/{id}/profile', [App\Http\Controllers\ResidentController::class, 'show'])
+    ->name('residents.profile')
+    ->middleware('auth');
+
+    // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::patch('/profile/picture', [ProfileController::class, 'updatePicture'])->name('profile.update.picture');
-    Route::patch('/profile/notifications', [ProfileController::class, 'updateNotifications'])->name('profile.notifications.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // 🔥 PROFILE PICTURE ROUTE — FIXED
+    Route::match(['post', 'patch'], '/profile/picture', [ProfileController::class, 'updatePicture'])->name('profile.picture.update');
+
+    // Notification Settings
+    Route::patch('/profile/notifications', [ProfileController::class, 'updateNotifications'])->name('profile.notifications.update');
 
     // Family Members Routes
     Route::post('/profile/family', [FamilyMemberController::class, 'store'])->name('profile.family.store');

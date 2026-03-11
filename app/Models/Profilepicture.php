@@ -13,6 +13,7 @@ class ProfilePicture extends Model
     protected $fillable = [
         'user_id',
         'file_path',
+        'name',
         'activity_status',
         'deleted_status',
         'created_by',

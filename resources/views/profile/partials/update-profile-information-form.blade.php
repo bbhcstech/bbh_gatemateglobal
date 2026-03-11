@@ -60,13 +60,13 @@
                 <div class="row">
                     <div class="col-auto">
                         <div class="profile-avatar-wrapper mt-n5">
-                            @php
-                                $profilePicUrl = null;
-                                if ($user->profilePicture && $user->profilePicture->file_path) {
-                                    $profilePicUrl = asset($user->profilePicture->file_path);
-                                }
-                            @endphp
+@php
+$profilePicUrl = null;
 
+if ($user->profilePicture && $user->profilePicture->file_path) {
+    $profilePicUrl = asset($user->profilePicture->file_path);
+}
+@endphp
                             @if($profilePicUrl)
                                 <img src="{{ $profilePicUrl }}"
                                      class="rounded-circle border-4 border-white shadow"
@@ -719,7 +719,7 @@
                 <h5 class="modal-title" style="color: #553c9a;">Update Profile Picture</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form method="post" action="{{ route('profile.update.picture') }}" enctype="multipart/form-data">
+           <form action="{{ route('profile.picture.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('patch')
                 <div class="modal-body p-4">

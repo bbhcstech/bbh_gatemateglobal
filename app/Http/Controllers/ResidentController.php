@@ -4,7 +4,7 @@ use App\Models\User;
 use App\Models\Resident;
 use App\Models\Tower;
 use App\Models\Floor;
-use App\Models\Pet; 
+use App\Models\Pet;
 use App\Models\Flat;
 use App\Models\ParkingLot;
 use Illuminate\Http\Request;
@@ -85,9 +85,25 @@ public function profile($id)
     return view('admin.resident.profile', compact('resident', 'pets'));
 }
 
+// public function show($id)
+// {
+//     $resident = Resident::with('familyMembers.relation')->find($id);
+//     $pets = Pet::where('resident_id', $resident->user_id ?? $id)
+//                ->whereNull('deleted_at')
+//                ->get();
+
+//     return view('admin.resident.profile', compact('resident', 'pets'));
+// }
+
+
 public function show($id)
 {
-    $resident = Resident::with('familyMembers.relation')->find($id);
+    $resident = Resident::with(['tower', 'floor', 'flat', 'familyMembers.relation'])->find($id);
+
+    if (!$resident) {
+        return redirect()->route('residents.index')->with('error', 'Resident not found!');
+    }
+
     $pets = Pet::where('resident_id', $resident->user_id ?? $id)
                ->whereNull('deleted_at')
                ->get();
